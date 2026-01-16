@@ -1,0 +1,13 @@
+import axios from "axios";
+
+export default class APIServices {
+  static postAPIRequest = async (url: string, data?: any): Promise<{success : boolean , data : string}> => {
+    try {
+      const response = await axios.post(url, data);
+      return response.data;
+    } catch (error) {
+      console.error("Error in POST API Request:", error);
+      throw error;
+    }
+  };
+}
