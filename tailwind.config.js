@@ -10,6 +10,9 @@ module.exports = {
           primary: "#1D4ED8", // Custom color
           secondary: "#9333EA", // Custom color
         },
+        listStyleType: {
+          circle: 'circle',
+        },
       },
     },
     plugins: [],

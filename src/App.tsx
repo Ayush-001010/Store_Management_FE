@@ -6,6 +6,7 @@ import Home from "./Components/Home/Home";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import SignUp from "./Components/SignUp/SignUp";
+import CreateStore from "./Components/CreateStore/CreateStore";
 
 const App: React.FC<IApp> = () => {
   return (
@@ -14,6 +15,7 @@ const App: React.FC<IApp> = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/createStore" element={<CreateStore />} />
       </Routes>
     </HashRouter>
   );

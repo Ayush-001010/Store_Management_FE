@@ -7,7 +7,7 @@ import NavbarPresentation from "../../../PresentationComponent/NavbarPresentatio
 const TopNavbar: React.FC<ITopNavbar> = () => {
   const { isSignIn } = useSelector((state: any) => state.userDetails);
   return (
-    <div className="border-b-2 border-[#adb5bd] m-0">
+    <div className="border-b-2 border-[#adb5bd] m-0 p-1">
       <NavbarPresentation
         title={CommonConfig.prj_title}
         sub_description={CommonConfig.prj_subDescription}
