@@ -18,7 +18,6 @@ const HeaderText: React.FC<IHeaderText> = () => {
     }),
   };
 
-  console.log("Header Properties:", headerProperties);
   return (
     <div>
       {!headerProperties?.isAnimationRequired && (

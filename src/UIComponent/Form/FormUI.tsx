@@ -37,17 +37,23 @@ const FormUI: FromComponentProps = ({ children, headerText, formConfig }) => {
   const { validationSchema, initialValues } = useFormAction(formConfig);
 
   return (
-    <Formik
-      initialValues={initialValues}
-      validationSchema={validationSchema}
-      onSubmit={() => {}}
-    >
-      {(formik) => (
-        <FormContext.Provider value={{ headerText, formConfig, formik }}>
-          <form onSubmit={formik.handleSubmit}>{children}</form>
-        </FormContext.Provider>
+    <>
+      {Object.keys(initialValues).length > 0 && (
+        <Formik
+          initialValues={{ ...initialValues }}
+          validationSchema={validationSchema}
+          onSubmit={(values) => {
+            console.log("Form Submitted with values:", values);
+          }}
+        >
+          {(formik) => (
+            <FormContext.Provider value={{ headerText, formConfig, formik }}>
+              <form onSubmit={formik.handleSubmit}>{children}</form>
+            </FormContext.Provider>
+          )}
+        </Formik>
       )}
-    </Formik>
+    </>
   );
 };
 
