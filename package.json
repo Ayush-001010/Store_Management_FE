@@ -10,6 +10,7 @@
     "tailwindcss": "^2.2.19"
   },
   "dependencies": {
+    "@ant-design/icons": "^6.1.0",
     "@reduxjs/toolkit": "^2.11.2",
     "@tailwindcss/postcss7-compat": "^2.2.17",
     "@testing-library/dom": "^10.4.1",
@@ -24,6 +25,8 @@
     "axios": "^1.13.2",
     "bootstrap": "^5.3.8",
     "bootstrap-icons": "^1.13.1",
+    "formik": "^2.4.9",
+    "grapheme-splitter": "^1.0.4",
     "motion": "^12.26.2",
     "postcss-flexbugs-fixes": "^5.0.2",
     "postcss-loader": "^8.2.0",
@@ -33,7 +36,8 @@
     "react-router-dom": "^7.12.0",
     "react-scripts": "^5.0.1",
     "typescript": "^4.9.5",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "yup": "^1.7.1"
   },
   "scripts": {
     "start": "react-scripts start",

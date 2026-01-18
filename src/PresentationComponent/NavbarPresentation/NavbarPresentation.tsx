@@ -54,9 +54,9 @@ const NavbarPresentation: React.FC<INavbarPresentation> = ({
       </div>
       {!isUserLoggedIn && (
         <div className="flex w-1/2 justify-end items-center">
-          <TextLinkCard>Sign In</TextLinkCard>
+          <TextLinkCard navLink="/signIn">Sign In</TextLinkCard>
           <p className="m-1 text-[#adb5bd]">or</p>
-          <TextLinkCard>Sign Up</TextLinkCard>
+          <TextLinkCard navLink="/signUp">Sign Up</TextLinkCard>
         </div>
       )}
     </div>

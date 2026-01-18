@@ -1,0 +1,58 @@
+import React, { createContext, ReactNode, useContext } from "react";
+import { IForm } from "./IForm";
+import HeaderText from "../../PresentationComponent/FormPresentationComponent/HeaderText/HeaderText";
+import useFormAction from "../../Services/Hooks/useFormAction";
+import { Formik, FormikProps } from "formik";
+import FormBodyType1 from "./FormBodyTypes/Type1/FormBodyType1";
+import IFormDisplayTypeConfig from "../../Types/FormConfig";
+import SignUIButton from "./FormButtonTypes/SignUIButton/SignUIButton";
+
+interface IFormContext {
+  headerText?: {
+    text: string;
+    isAnimationRequired?: boolean;
+    boldWords?: Array<string>;
+  };
+  formConfig: Array<IFormDisplayTypeConfig>;
+  formik: FormikProps<any>;
+}
+
+const FormContext = createContext<IFormContext | undefined>(undefined);
+
+export const useGetFormContext = () => {
+  const context = useContext(FormContext);
+  if (!context) {
+    throw new Error("useFormContext must be used within a FormProvider");
+  }
+  return context;
+};
+
+interface FromComponentProps extends React.FC<IForm & { children: ReactNode }> {
+  HeaderText: React.FC;
+  FormType1: React.FC;
+  SignUIButton: React.FC;
+}
+
+const FormUI: FromComponentProps = ({ children, headerText, formConfig }) => {
+  const { validationSchema, initialValues } = useFormAction(formConfig);
+
+  return (
+    <Formik
+      initialValues={initialValues}
+      validationSchema={validationSchema}
+      onSubmit={() => {}}
+    >
+      {(formik) => (
+        <FormContext.Provider value={{ headerText, formConfig, formik }}>
+          <form onSubmit={formik.handleSubmit}>{children}</form>
+        </FormContext.Provider>
+      )}
+    </Formik>
+  );
+};
+
+FormUI.HeaderText = HeaderText;
+FormUI.FormType1 = FormBodyType1;
+FormUI.SignUIButton = SignUIButton;
+
+export default FormUI;
