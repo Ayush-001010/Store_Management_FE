@@ -9,7 +9,7 @@ const useFormAction = (config: Array<IFormDisplayTypeConfig>) => {
 
   const makeValidationSchemaAndInitialValue = useCallback(
     (formConfig: Array<IFormDisplayTypeConfig>) => {
-      const schemaFields: Record<string, yup.StringSchema> = {};
+      const schemaFields: Record<string, yup.StringSchema | yup.BooleanSchema> = {};
       const initialValues: Record<string, any> = {};
       formConfig.forEach((formDisplayConfig: IFormDisplayTypeConfig) => {
         formDisplayConfig.fields.forEach((field) => {

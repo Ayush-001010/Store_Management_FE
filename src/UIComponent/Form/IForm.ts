@@ -7,4 +7,6 @@ export interface IForm {
     boldWords?: Array<string>;
   };
   formConfig: Array<IFormDisplayTypeConfig>;
+  specialTypeForm?: boolean;
+  specialTypeName?: "create-store";
 }

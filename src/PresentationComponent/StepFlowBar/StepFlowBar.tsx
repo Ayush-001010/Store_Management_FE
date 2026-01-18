@@ -17,7 +17,7 @@ const StepFlowBar: React.FC<IStepFlowBar> = ({
       className={"m-1 flex justify-start " + (isActive ? "h-auto" : "h-200px")}
     >
       <div className="w-20 ">
-        <h1 className={" h-20 flex justify-center items-center rounded-full text-lg text-[#495057] font-normal hover:font-medium hover:text-[#212529]  cursor-pointer " + (isActive ? "border-[#6c757d] hover:border-2 hover:border-[#343a40] border-2 bg-[#6c757d] text-white text-shadow-sm" : "border-[#ced4da] hover:border-2 hover:border-[#212529] border-1")}>
+        <h1 className={" h-20 w-20 flex justify-center items-center rounded-full text-lg text-[#495057] font-normal hover:font-medium hover:text-[#212529]  cursor-pointer " + (isActive ? "border-[#6c757d] hover:border-2 hover:border-[#343a40] border-2 bg-[#6c757d] text-white text-shadow-sm" : "border-[#ced4da] hover:border-2 hover:border-[#212529] border-1")}>
           {index + 1}
         </h1>
         {!isLast && (
@@ -25,7 +25,7 @@ const StepFlowBar: React.FC<IStepFlowBar> = ({
             <p
               className={
                 "w-[0.5px] m-2 shadow-sm " +
-                (isActive ? "h-[220px] bg-[#6c757d]" : "h-6 bg-[#6c757d]")
+                (isActive ? "h-[300px] bg-[#6c757d]" : "h-6 bg-[#6c757d]")
               }
             ></p>
           </div>

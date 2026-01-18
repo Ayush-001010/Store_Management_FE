@@ -6,6 +6,8 @@ import { Formik, FormikProps } from "formik";
 import FormBodyType1 from "./FormBodyTypes/Type1/FormBodyType1";
 import IFormDisplayTypeConfig from "../../Types/FormConfig";
 import SignUIButton from "./FormButtonTypes/SignUIButton/SignUIButton";
+import NextButton from "./FormButtonTypes/NextButton/NextButton";
+import ShopDetails from "./FormBodyTypes/ShopDetails/ShopDetails";
 
 interface IFormContext {
   headerText?: {
@@ -31,6 +33,8 @@ interface FromComponentProps extends React.FC<IForm & { children: ReactNode }> {
   HeaderText: React.FC;
   FormType1: React.FC;
   SignUIButton: React.FC;
+  NextUIButton: React.FC;
+  FormShopDetails: React.FC;
 }
 
 const FormUI: FromComponentProps = ({ children, headerText, formConfig }) => {
@@ -60,5 +64,7 @@ const FormUI: FromComponentProps = ({ children, headerText, formConfig }) => {
 FormUI.HeaderText = HeaderText;
 FormUI.FormType1 = FormBodyType1;
 FormUI.SignUIButton = SignUIButton;
+FormUI.NextUIButton = NextButton;
+FormUI.FormShopDetails = ShopDetails;
 
 export default FormUI;
