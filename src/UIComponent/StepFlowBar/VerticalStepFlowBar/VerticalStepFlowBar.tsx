@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 
 const VerticalStepFlowBar: React.FC<IVerticalStepFlowBar> = ({
   flowBarConfig,
+  activeStep
 }) => {
   return (
     <motion.div
@@ -37,7 +38,7 @@ const VerticalStepFlowBar: React.FC<IVerticalStepFlowBar> = ({
             isLast={index === flowBarConfig.length - 1}
             index={index}
             config={step}
-            activeStepIndex={0}
+            activeStepIndex={activeStep}
           />
         </motion.div>
       ))}

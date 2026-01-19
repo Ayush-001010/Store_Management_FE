@@ -20,6 +20,7 @@ interface IFormContext {
   addNewShopDetails: (shopNumber: number) => void;
   options?: Record<string, any>;
   callingAPIForOptions : (url : string , body?:any) => Promise<any>;
+  isAnimationRequired?: boolean;
 }
 
 const FormContext = createContext<IFormContext | undefined>(undefined);
@@ -47,6 +48,8 @@ const FormUI: FromComponentProps = ({
   isSpecialTypeForm,
   specialTypeName,
   options,
+  isAnimationRequired,
+  submitHandler
 }) => {
   const { validationSchema, initialValues, addNewShopDetails , callingAPIForOptions } = useFormAction(
     formConfig,
@@ -54,16 +57,22 @@ const FormUI: FromComponentProps = ({
     specialTypeName,
   );
 
+  const handleSubmit = (values: Record<string, any>) => {
+    if (submitHandler) {
+      submitHandler(values);
+    } else {
+      console.log("Form Submitted with values:", values);
+    }
+  };
+
   return (
-    <>
+    <div className="w-full">
       {initialValues && Object.keys(initialValues).length > 0 && (
         <Formik
-          initialValues={initialValues} // Using the initialValues directly
+          initialValues={initialValues}
           validationSchema={validationSchema}
-          enableReinitialize // Automatically reinitialize when initialValues change
-          onSubmit={(values) => {
-            console.log("Form Submitted with values:", values);
-          }}
+          enableReinitialize
+          onSubmit={handleSubmit}
         >
           {(formik) => (
             <FormContext.Provider
@@ -73,7 +82,8 @@ const FormUI: FromComponentProps = ({
                 formik,
                 addNewShopDetails,
                 options,
-                callingAPIForOptions
+                callingAPIForOptions,
+                isAnimationRequired
               }}
             >
               <form onSubmit={formik.handleSubmit}>{children}</form>
@@ -81,7 +91,7 @@ const FormUI: FromComponentProps = ({
           )}
         </Formik>
       )}
-    </>
+    </div>
   );
 };
 

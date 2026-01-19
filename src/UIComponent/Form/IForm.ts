@@ -11,4 +11,6 @@ export interface IForm {
   isSpecialTypeForm?: boolean;
   specialTypeName?: "create-store";
   options?: Record<string,Array<IOptionInterface>>;
+  isAnimationRequired?: boolean;
+  submitHandler?: (formData: Record<string, any>) => void;
 }

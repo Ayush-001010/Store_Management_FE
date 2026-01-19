@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { PropsWithChildren, useEffect, useMemo, useState } from "react";
 import IShop from "./IShop";
 import { Input } from "antd";
 import { useGetFormContext } from "../../../FormUI";
@@ -7,66 +7,70 @@ import SelectInput from "../../../../../PresentationComponent/FormPresentationCo
 import CheckBoxInput from "../../../../../PresentationComponent/FormPresentationComponent/Inputs/CheckBoxInput/CheckBoxInput";
 import TextAreaInput from "../../../../../PresentationComponent/FormPresentationComponent/Inputs/TextAreaInput/TextAreaInput";
 import { IOptionInterface } from "../../../../../Types/CommonInterface";
+import Header from "./Header/Header";
+import SectionHeader from "../../../../../PresentationComponent/FormPresentationComponent/Body/SectionHeader/SectionHeader";
+import CreateStoreConfig from "../../../../../Config/CreateStoreConfig";
 
 const Shop: React.FC<IShop> = ({ shopNumber }) => {
-  const { formik, options , callingAPIForOptions } = useGetFormContext();
+  const { formik, options, callingAPIForOptions } = useGetFormContext();
   const [cityOptions, setCityOptions] = useState<Array<IOptionInterface>>([]);
-  const [streetOptions, setStreetOptions] = useState<Array<IOptionInterface>>([]);
-  const timingOptions = useMemo(()=>{
-    return [{ label: "09:00 AM", value: "09:00 AM"  , },{ label: "10:00 AM", value: "10:00 AM" } , { label: "11:00 AM", value: "11:00 AM" } ,  
-      { label: "12:00 PM", value: "12:00 PM" } , { label: "01:00 PM", value: "01:00 PM" } , { label: "02:00 PM", value: "02:00 PM" }
-      , { label: "03:00 PM", value: "03:00 PM" } , { label: "04:00 PM", value: "04:00 PM" } , { label: "05:00 PM", value: "05:00 PM" }
-      , { label: "06:00 PM", value: "06:00 PM" } , { label: "07:00 PM", value: "07:00 PM" } , { label: "08:00 PM", value: "08:00 PM" }
-      , { label: "09:00 PM", value: "09:00 PM" } , { label: "10:00 PM", value: "10:00 PM" } , { label: "11:00 PM", value: "11:00 PM" }
-      , { label: "12:00 AM", value: "12:00 AM" } , { label: "01:00 AM", value: "01:00 AM" } , { label: "02:00 AM", value: "02:00 AM" }
-      , { label: "03:00 AM", value: "03:00 AM" } , { label: "04:00 AM", value: "04:00 AM" } , { label: "05:00 AM", value: "05:00 AM" }
-      , { label: "06:00 AM", value: "06:00 AM" } , { label: "07:00 AM", value: "07:00 AM" } , { label: "08:00 AM", value: "08:00 AM" }
-    ];
-  },[]);
+  const [streetOptions, setStreetOptions] = useState<Array<IOptionInterface>>(
+    []
+  );
+  const timingOptions = useMemo(() => {
+    return CreateStoreConfig.timingOptions;
+  }, []);
 
-  useEffect(()=>{
-    if(formik.values[`state_${shopNumber}`]){
-      callingAPIForOptions("/master/masterDetails",{stateID : formik.values[`state_${shopNumber}`] , type:"city"} ).then((response)=>{
-        if(response?.success){
-          const cities = response.data.map((item:any) => ({
-              label: item.name,
-              value: item.id,
+  useEffect(() => {
+    if (formik.values[`state_${shopNumber}`]) {
+      callingAPIForOptions("/master/masterDetails", {
+        stateID: formik.values[`state_${shopNumber}`],
+        type: "city",
+      }).then((response) => {
+        if (response?.success) {
+          const cities = response.data.map((item: any) => ({
+            label: item.name,
+            value: item.id,
           }));
           setCityOptions(cities);
         }
       });
     }
-    if(formik.values[`city_${shopNumber}`]){
-      callingAPIForOptions("/master/masterDetails",{cityID : formik.values[`city_${shopNumber}`] , type:"street"} ).then((response)=>{
-        if(response?.success){
-          const streets = response.data.map((item:any) => ({
-              label: item.name,
-              value: item.id,
+    if (formik.values[`city_${shopNumber}`]) {
+      callingAPIForOptions("/master/masterDetails", {
+        cityID: formik.values[`city_${shopNumber}`],
+        type: "street",
+      }).then((response) => {
+        if (response?.success) {
+          const streets = response.data.map((item: any) => ({
+            label: item.name,
+            value: item.id,
           }));
           setStreetOptions(streets);
         }
       });
     }
+  }, [
+    formik.values[`state_${shopNumber}`],
+    formik.values[`city_${shopNumber}`],
+  ]);
 
-  },[formik.values[`state_${shopNumber}`] , formik.values[`city_${shopNumber}`]]);
+  const SectionWraper: React.FC<PropsWithChildren> = ({ children }) => {
+    return <div>{children}</div>;
+  };
 
+  const FullWidthDivWrapper: React.FC<PropsWithChildren> = ({ children }) => {
+    return <div className="w-full">{children}</div>;
+  };
 
   return (
-    <div>
+    <div className="shadow-lg rounded-lg p-1 w-[400px] m-2 shaodow-[#ced4da]">
+      <Header shopNumber={shopNumber} />
       <div>
         <div>
-          <p><i className="bi bi-shop" /></p>
-          <p>{shopNumber}</p>
-        </div>
-        <div>
-          <p><i className="bi bi-trash" /></p>
-        </div>
-      </div>
-      <div>
-        <div>
-          <p> Name </p>
-          <div>
-            <div>
+          <SectionHeader text="Name" />
+          <SectionWraper>
+            <FullWidthDivWrapper>
               <TextInput
                 config={{
                   displayName: "Store Name",
@@ -74,36 +78,41 @@ const Shop: React.FC<IShop> = ({ shopNumber }) => {
                   type: "text",
                 }}
                 formik={formik}
+                isSmall={true}
               />
-            </div>
-          </div>
+            </FullWidthDivWrapper>
+          </SectionWraper>
         </div>
         <div>
-          <p> Location </p>
-          <div>
-            <div>
-              <SelectInput
-                config={{
-                  displayName: "State",
-                  backendName: `state_${shopNumber}`,
-                  type: "select",
-                }}
-                formik={formik}
-                options={options && options["state"] ? options["state"] : []}
-              />
+          <SectionHeader text="Location Details" />
+          <SectionWraper>
+            <div className="flex gap-2">
+              <FullWidthDivWrapper>
+                <SelectInput
+                  config={{
+                    displayName: "State",
+                    backendName: `state_${shopNumber}`,
+                    type: "select",
+                  }}
+                  formik={formik}
+                  options={options && options["state"] ? options["state"] : []}
+                  isSmall={true}
+                />
+              </FullWidthDivWrapper>
+              <FullWidthDivWrapper>
+                <SelectInput
+                  config={{
+                    displayName: "City",
+                    backendName: `city_${shopNumber}`,
+                    type: "select",
+                  }}
+                  formik={formik}
+                  options={cityOptions}
+                  isSmall={true}
+                />
+              </FullWidthDivWrapper>
             </div>
-            <div>
-              <SelectInput
-                config={{
-                  displayName: "City",
-                  backendName: `city_${shopNumber}`,
-                  type: "select",
-                }}
-                formik={formik}
-                options={cityOptions}
-              />
-            </div>
-            <div>
+            <div className="w-1/2">
               <SelectInput
                 config={{
                   displayName: "Street",
@@ -112,23 +121,25 @@ const Shop: React.FC<IShop> = ({ shopNumber }) => {
                 }}
                 formik={formik}
                 options={streetOptions}
+                isSmall={true}
               />
             </div>
             <div>
-              <TextInput
+              <TextAreaInput
                 config={{
                   displayName: "Address",
                   backendName: `address_${shopNumber}`,
                   type: "text",
                 }}
                 formik={formik}
+                isSmall={true}
               />
             </div>
-          </div>
+          </SectionWraper>
         </div>
         <div>
-          <p>Operating Details:</p>
-          <div>
+          <SectionHeader text="Operational Timings" />
+          <SectionWraper>
             <div>
               <CheckBoxInput
                 config={{
@@ -137,71 +148,71 @@ const Shop: React.FC<IShop> = ({ shopNumber }) => {
                   type: "checkbox",
                 }}
                 formik={formik}
+                isSmall={true}
               />
             </div>
-            <div>
-              <SelectInput
-                config={{
-                  displayName: "Opening Time",
-                  backendName: `openingTime_${shopNumber}`,
-                  type: "text",
-                }}
-                formik={formik}
-                options={timingOptions}
-              />
+            <div className="flex gap-2">
+              <FullWidthDivWrapper>
+                <SelectInput
+                  config={{
+                    displayName: "Opening Time",
+                    backendName: `openingTime_${shopNumber}`,
+                    type: "text",
+                  }}
+                  formik={formik}
+                  options={timingOptions}
+                />
+              </FullWidthDivWrapper>
+              <FullWidthDivWrapper>
+                <SelectInput
+                  config={{
+                    displayName: "Closing Time",
+                    backendName: `closingTime_${shopNumber}`,
+                    type: "text",
+                  }}
+                  formik={formik}
+                  options={timingOptions}
+                />
+              </FullWidthDivWrapper>
             </div>
-            <div>
-              <SelectInput
-                config={{
-                  displayName: "Closing Time",
-                  backendName: `closingTime_${shopNumber}`,
-                  type: "text",
-                }}
-                formik={formik}
-                options={timingOptions}
-              />
-            </div>
-          </div>
+          </SectionWraper>
         </div>
         <div>
-          <p>Category</p>
-          <div>
-            <div>
-              <SelectInput
-                config={{
-                  displayName: "Shop Category",
-                  backendName: `shopCategory_${shopNumber}`,
-                  type: "select",
-                }}
-                formik={formik}
-                options={
-                  options && options["shopCategory"]
-                    ? options["shopCategory"]
-                    : []
-                }
-              />
+          <SectionHeader text="Category & Contact Information" />
+          <SectionWraper>
+            <div className="flex  gap-2">
+              <FullWidthDivWrapper>
+                <SelectInput
+                  config={{
+                    displayName: "Store Category",
+                    backendName: `storeCategory_${shopNumber}`,
+                    type: "select",
+                  }}
+                  formik={formik}
+                  options={
+                    options && options["shopCategory"]
+                      ? options["shopCategory"]
+                      : []
+                  }
+                />
+              </FullWidthDivWrapper>
+              <FullWidthDivWrapper>
+                <TextInput
+                  config={{
+                    displayName: "Contact Number",
+                    backendName: `contactNumber_${shopNumber}`,
+                    type: "text",
+                  }}
+                  formik={formik}
+                />
+              </FullWidthDivWrapper>
             </div>
-          </div>
+          </SectionWraper>
         </div>
         <div>
-          <p>Contact Details:</p>
-          <div>
-            <div>
-              <TextInput
-                config={{
-                  displayName: "Contact Number",
-                  backendName: `contactNumber_${shopNumber}`,
-                  type: "text",
-                }}
-                formik={formik}
-              />
-            </div>
-          </div>
-        </div>
-        <div>
-          <p>Tags</p>
-          <div>
-            <div>
+          <SectionHeader text="Tags" />
+          <SectionWraper>
+            <div className="w-1/2">
               <SelectInput
                 config={{
                   displayName: "Shop Tags",
@@ -209,14 +220,18 @@ const Shop: React.FC<IShop> = ({ shopNumber }) => {
                   type: "select",
                 }}
                 formik={formik}
-                options={[{ label : "Prirority 1" , value : "Priority 1" } , { label : "Priority 2" , value : "Priority 2" } , { label : "Priority 3" , value : "Priority 3" }]}
+                options={[
+                  { label: "Prirority 1", value: "Priority 1" },
+                  { label: "Priority 2", value: "Priority 2" },
+                  { label: "Priority 3", value: "Priority 3" },
+                ]}
               />
             </div>
-          </div>
+          </SectionWraper>
         </div>
         <div>
-          <p>Shop Description</p>
-          <div>
+          <SectionHeader text="Description" />
+          <SectionWraper>
             <div>
               <TextAreaInput
                 config={{
@@ -227,7 +242,7 @@ const Shop: React.FC<IShop> = ({ shopNumber }) => {
                 formik={formik}
               />
             </div>
-          </div>
+          </SectionWraper>
         </div>
       </div>
     </div>

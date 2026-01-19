@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import IImageInput from "./IImageInput";
 import { GetProp, Image , Upload, UploadFile, UploadProps } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
+import LabelBox from "../LabelBox/LabelBox";
 
 const ImageInput: React.FC<IImageInput> = ({ config , formik }) => {
   const [fileList, setFileList] = useState<any[]>([]);
@@ -40,8 +41,8 @@ const ImageInput: React.FC<IImageInput> = ({ config , formik }) => {
   };
 
   return (
-    <div>
-      <label>{config.displayName}</label>
+    <div className="w-[500px] mt-1">
+      <LabelBox text={config.displayName} />
       <Upload
         action="https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload"
         listType="picture-card"

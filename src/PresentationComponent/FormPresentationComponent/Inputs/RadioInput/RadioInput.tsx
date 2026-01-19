@@ -2,6 +2,7 @@ import React from "react";
 import IRadioInput from "./IRadioInput";
 import { Radio } from "antd";
 import ErrorMessageDisplay from "../ErrorMessageDisplay/ErrorMessageDisplay";
+import LabelBox from "../LabelBox/LabelBox";
 
 const RadioInput: React.FC<IRadioInput> = ({ config , formik }) => {
 
@@ -13,9 +14,9 @@ const RadioInput: React.FC<IRadioInput> = ({ config , formik }) => {
   };
 
   return (
-    <div>
-      <label>{config.displayName}</label>
-      <Radio.Group options={config.options || []} onChange={changeHandler} onBlur={blurHandler} />
+    <div className="w-full flex flex-col mt-1">
+      <LabelBox text={config.displayName} />
+      <Radio.Group options={config.options || []} onChange={changeHandler} onBlur={blurHandler} className="text-sm font-medium text-[#6c757d] m-1" />
       {formik.touched[config.backendName] &&
         formik.errors[config.backendName] && (
           <ErrorMessageDisplay

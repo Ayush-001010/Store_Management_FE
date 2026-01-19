@@ -1,11 +1,12 @@
 import React from "react";
 import INextButton from "./INextButton";
 import { Button } from "antd";
+import NextButtonUI from "../../../../PresentationComponent/FormPresentationComponent/Button/NextButton/NextButtonUI";
 
 const NextButton : React.FC<INextButton> = () => {
     return (
-        <div>
-            <Button type="primary" htmlType="submit">Next</Button>
+        <div className="w-1/2 flex justify-center">
+            <NextButtonUI text={"Cast the Next Spell!!"} />
         </div>
     )
 };

@@ -3,6 +3,7 @@ import IEmailInput from "./IEmailInput";
 import { Input } from "antd";
 import { MailOutlined } from "@ant-design/icons";
 import ErrorMessageDisplay from "../ErrorMessageDisplay/ErrorMessageDisplay";
+import LabelBox from "../LabelBox/LabelBox";
 
 const EmailInput: React.FC<IEmailInput> = ({ config, formik }) => {
   const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -12,9 +13,10 @@ const EmailInput: React.FC<IEmailInput> = ({ config, formik }) => {
     formik.setFieldTouched(config.backendName, true);
   };
   return (
-    <div>
-      <label>{config.displayName}</label>
+    <div className="w-full mt-1">
+      <LabelBox text={config.displayName} />
       <Input
+        className="w-full mt-1"
         addonBefore={<MailOutlined />}
         type="email"
         onChange={changeHandler}

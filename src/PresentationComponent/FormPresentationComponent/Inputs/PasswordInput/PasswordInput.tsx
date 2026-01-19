@@ -2,6 +2,7 @@ import React from "react";
 import IPasswordInput from "./IPasswordInput";
 import { Input } from "antd";
 import ErrorMessageDisplay from "../ErrorMessageDisplay/ErrorMessageDisplay";
+import LabelBox from "../LabelBox/LabelBox";
 
 const PasswordInput: React.FC<IPasswordInput> = ({ config , formik }) => {
 
@@ -13,9 +14,9 @@ const PasswordInput: React.FC<IPasswordInput> = ({ config , formik }) => {
   };
 
   return (
-    <div>
-      <label>{config.displayName}</label>
-      <Input type="password" onChange={changeHandler} onBlur={blurHandler} />
+    <div className="w-full mt-1">
+      <LabelBox text={config.displayName} />
+      <Input className="w-full mt-1" type="password" onChange={changeHandler} onBlur={blurHandler} />
       {formik.touched[config.backendName] &&
         formik.errors[config.backendName] && (
           <ErrorMessageDisplay
