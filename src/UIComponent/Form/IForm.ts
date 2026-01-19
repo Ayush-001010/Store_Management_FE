@@ -1,3 +1,4 @@
+import { IOptionInterface } from "../../Types/CommonInterface";
 import IFormDisplayTypeConfig from "../../Types/FormConfig";
 
 export interface IForm {
@@ -7,6 +8,7 @@ export interface IForm {
     boldWords?: Array<string>;
   };
   formConfig: Array<IFormDisplayTypeConfig>;
-  specialTypeForm?: boolean;
+  isSpecialTypeForm?: boolean;
   specialTypeName?: "create-store";
+  options?: Record<string,Array<IOptionInterface>>;
 }

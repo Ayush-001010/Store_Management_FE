@@ -17,6 +17,9 @@ interface IFormContext {
   };
   formConfig: Array<IFormDisplayTypeConfig>;
   formik: FormikProps<any>;
+  addNewShopDetails: (shopNumber: number) => void;
+  options?: Record<string, any>;
+  callingAPIForOptions : (url : string , body?:any) => Promise<any>;
 }
 
 const FormContext = createContext<IFormContext | undefined>(undefined);
@@ -37,21 +40,42 @@ interface FromComponentProps extends React.FC<IForm & { children: ReactNode }> {
   FormShopDetails: React.FC;
 }
 
-const FormUI: FromComponentProps = ({ children, headerText, formConfig }) => {
-  const { validationSchema, initialValues } = useFormAction(formConfig);
+const FormUI: FromComponentProps = ({
+  children,
+  headerText,
+  formConfig,
+  isSpecialTypeForm,
+  specialTypeName,
+  options,
+}) => {
+  const { validationSchema, initialValues, addNewShopDetails , callingAPIForOptions } = useFormAction(
+    formConfig,
+    isSpecialTypeForm,
+    specialTypeName,
+  );
 
   return (
     <>
-      {Object.keys(initialValues).length > 0 && (
+      {initialValues && Object.keys(initialValues).length > 0 && (
         <Formik
-          initialValues={{ ...initialValues }}
+          initialValues={initialValues} // Using the initialValues directly
           validationSchema={validationSchema}
+          enableReinitialize // Automatically reinitialize when initialValues change
           onSubmit={(values) => {
             console.log("Form Submitted with values:", values);
           }}
         >
           {(formik) => (
-            <FormContext.Provider value={{ headerText, formConfig, formik }}>
+            <FormContext.Provider
+              value={{
+                headerText,
+                formConfig,
+                formik,
+                addNewShopDetails,
+                options,
+                callingAPIForOptions
+              }}
+            >
               <form onSubmit={formik.handleSubmit}>{children}</form>
             </FormContext.Provider>
           )}

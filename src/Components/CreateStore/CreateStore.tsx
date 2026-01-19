@@ -8,7 +8,7 @@ import CreateStoreFormConfig from "../../Config/FormConfigs/CreateStoreFormConfi
 
 const CreateStore: React.FC<ICreateStore> = () => {
   const [activeStep, setActiveStep] = useState<number>(1);
-  const val = useCreateStoreAction();
+  const { options } = useCreateStoreAction();
 
   return (
     <div className="flex flex-row ">
@@ -18,9 +18,7 @@ const CreateStore: React.FC<ICreateStore> = () => {
       <div className="w-full">
         {activeStep === 0 && (
           <>
-            <FormUI
-              formConfig={CreateStoreFormConfig.signUpFormConfig}
-            >
+            <FormUI formConfig={CreateStoreFormConfig.signUpFormConfig}>
               <FormUI.FormType1 />
               <FormUI.NextUIButton />
             </FormUI>
@@ -30,6 +28,9 @@ const CreateStore: React.FC<ICreateStore> = () => {
           <>
             <FormUI
               formConfig={CreateStoreFormConfig.createStoreFormConfig}
+              isSpecialTypeForm={true}
+              specialTypeName="create-store"
+              options={options}
             >
               <FormUI.FormShopDetails />
               <FormUI.NextUIButton />

@@ -165,6 +165,37 @@ export default class CreateStoreFormConfig {
                     ? schema.required("Closing Time is required when not 24/7")
                     : schema.notRequired();
             }),
+        },
+        {
+            displayName: "State",
+            backendName: "state",
+            type: "select",
+            placeholder: "Select your state",
+            validation: yup.string().required("State is required"),
+        },
+        {
+            displayName: "City",
+            backendName: "city",
+            type: "select",
+            placeholder: "Select your city",
+            validation: yup.string().required("City is required"), 
+        },
+        {
+           displayName:"street",
+            backendName:"street",
+            type:"select",
+            placeholder:"Select your street",
+            validation: yup.string().required("Street is required"), 
+        },
+        {
+            displayName: "Address",
+            backendName: "address",
+            type: "text",
+            placeholder: "Enter your address",
+            validation: yup
+              .string()
+              .required("Address is required")
+              .min(10, "Address must be at least 10 characters long"),
         }
       ],
     },
