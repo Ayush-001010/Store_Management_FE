@@ -10,4 +10,5 @@ export default interface UserDetailsType {
   userAbout?: string | null;
   userGender?: "male" | "female" | "other";
   isSignIn: boolean;
+  OrganizationID?: number;
 }

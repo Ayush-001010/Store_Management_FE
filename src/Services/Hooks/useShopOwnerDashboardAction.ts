@@ -2,12 +2,15 @@ import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import UserDetailsType from "../../Types/Redux/UserDetailsType";
 import APIServices from "../API_Call/APIServices";
+import ShopOwnerDashboardConfig from "../../Config/ShopOwnerDasboard";
+import CardInterface from "../../Types/CardInterface";
 
 const useShopOwnerDashboardAction = () => {
-  const { userName, userGender } = useSelector(
+  const { userName, userGender , OrganizationID } = useSelector(
     (state: any) => state.userDetails as UserDetailsType
   );
   const [welcomeText, setWelcomeText] = useState<string | null>(null);
+  const [cardValues, setCardValues] = useState<Array<CardInterface>>([]);
 
   const genrateWelcomeText = useCallback(async () => {
     const item = localStorage.getItem("welcomeMessage");
@@ -29,13 +32,31 @@ const useShopOwnerDashboardAction = () => {
     }
     return null;
   }, [userName, userGender]);
+  const getCardValues = useCallback(async () => {
+    const configs: Array<CardInterface> =
+      ShopOwnerDashboardConfig.dashboardCards;
+    const results: Array<CardInterface> = [...configs];
+    for (const config of configs) {
+      const response = await APIServices.postAPIRequest(config.backendUrl, {
+        type: config.requestBodyType,
+        organizationId : OrganizationID,
+      });
+      if (response.success) {
+        config.value = response.data;
+      }
+    }
+    return results;
+  }, [OrganizationID]);
 
   useEffect(() => {
     genrateWelcomeText().then((text: string | null) => {
       setWelcomeText(text);
     });
+    getCardValues().then((cards: Array<CardInterface>) => {
+      setCardValues(cards);
+    });
   }, []);
-  return { welcomeText };
+  return { welcomeText , cardValues };
 };
 
 export default useShopOwnerDashboardAction;

@@ -14,6 +14,7 @@ const initialValue : UserDetailsType = {
     userAbout: "Just a regular wizard trying to make his way in the world.",
     userGender: "male",
     isSignIn: true,
+    OrganizationID: 1
 }
 
 const UserDetailsSlice = createSlice({
