@@ -1,13 +1,27 @@
 import axios from "axios";
 
 export default class APIServices {
-  static postAPIRequest = async (url: string, data?: any): Promise<{success : boolean , data : any}> => {
+  static postAPIRequest =  async (url: string, data?: any): Promise<{success : boolean , data : any}> => {
     try {
       const response = await axios.post("http://localhost:8000" + url, data);
       return response.data;
     } catch (error) {
       console.error("Error in POST API Request:", error);
-      throw error;
+      return { success: false, data: null };
     }
   };
+  static postAPIForAI =  async (url: string, data?: any): Promise<{success : boolean , data : any}> => {
+    try {
+      const response = await axios.post("http://127.0.0.1:8000" + url, data , {
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Error in POST API Request:", error);
+      return { success: false, data: null };
+    }
+  }
 }

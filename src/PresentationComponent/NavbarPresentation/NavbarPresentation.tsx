@@ -2,6 +2,8 @@ import React from "react";
 import INavbarPresentation from "./INavbarPresentation";
 import TextLinkCard from "../Cards/TextLinkCard/TextLinkCard";
 import { motion } from "motion/react";
+import SignUpPresentation from "./SignUpPresentation/SignUpPresentation";
+import SignInPresentation from "./SignInPresentation/SignInPresentation";
 
 const NavbarPresentation: React.FC<INavbarPresentation> = ({
   title,
@@ -40,25 +42,20 @@ const NavbarPresentation: React.FC<INavbarPresentation> = ({
         <h2 className="m-0 text-sm text-[#adb5bd] fomt-medium">
           {`~ ${sub_description}`.split("").map((char, index) => (
             <motion.span
-            key={`${char}-${index}`}
-            className="inline-block"
-            variants={textVariant}
-            initial="hidden"
-            animate="visible"
-            custom={index}
-          >
-            {char === " " ? "\u00A0" : char}
-          </motion.span>
+              key={`${char}-${index}`}
+              className="inline-block"
+              variants={textVariant}
+              initial="hidden"
+              animate="visible"
+              custom={index}
+            >
+              {char === " " ? "\u00A0" : char}
+            </motion.span>
           ))}
         </h2>
       </div>
-      {!isUserLoggedIn && (
-        <div className="flex w-1/2 justify-end items-center">
-          <TextLinkCard navLink="/signIn">Sign In</TextLinkCard>
-          <p className="m-1 text-[#adb5bd]">or</p>
-          <TextLinkCard navLink="/signUp">Sign Up</TextLinkCard>
-        </div>
-      )}
+      {isUserLoggedIn && <SignInPresentation />}
+      {!isUserLoggedIn && <SignUpPresentation />}
     </div>
   );
 };
