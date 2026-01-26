@@ -1,26 +1,35 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { HashRouter, Route, Routes } from "react-router-dom";
+import IApp from "./IApp";
+import TopNavbar from "./Components/Navbar/TopNavbar/TopNavbar";
+import Home from "./Components/Home/Home";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap-icons/font/bootstrap-icons.css";
+import SignUp from "./Components/SignUp/SignUp";
+import CreateStore from "./Components/CreateStore/CreateStore";
+import { useSelector } from "react-redux";
+import UserDetailsType from "./Types/Redux/UserDetailsType";
+import SideNavbar from "./Components/Navbar/SideNavbar/SideNavbar";
+import ShopOwnerDashboard from "./Components/Dashboard/ShopOwner/ShopOwnerDashboard";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+const App: React.FC<IApp> = () => {
+  const { isSignIn } = useSelector(
+    (state: any) => state.userDetails as UserDetailsType
   );
-}
+  return (
+    <HashRouter>
+      <TopNavbar />
+      <div className="flex">
+        {isSignIn && <SideNavbar />}
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/createStore" element={<CreateStore />} />
+          <Route path="/shopsDashboard" element={<ShopOwnerDashboard />} />
+        </Routes>
+      </div>
+    </HashRouter>
+  );
+};
 
 export default App;
