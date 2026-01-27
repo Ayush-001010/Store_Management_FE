@@ -23,7 +23,7 @@ const NavbarPresentation: React.FC<INavbarPresentation> = ({
   };
 
   return (
-    <div className="flex justify-start h-12 ">
+    <div className="flex justify-start h-12">
       <div className="w-1/2 flex flex-col justify-center items-start p-4">
         <h1 className="text-xl font-bold text-[#582f0e] flex space-x-1">
           {title.split("").map((char, index) => (

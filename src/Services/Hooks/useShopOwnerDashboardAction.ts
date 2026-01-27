@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import UserDetailsType from "../../Types/Redux/UserDetailsType";
 import APIServices from "../API_Call/APIServices";
-import ShopOwnerDashboardConfig from "../../Config/ShopOwnerDasboard";
+import ShopOwnerDashboardConfig from "../../Config/ShopOwnerDasboardConfig";
 import CardInterface from "../../Types/CardInterface";
 
 const useShopOwnerDashboardAction = () => {
