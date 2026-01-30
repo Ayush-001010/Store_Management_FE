@@ -1,3 +1,4 @@
+import { AnalyticBarOptionInterface } from "../Types/AnalyticBarInterface";
 import CardInterface from "../Types/CardInterface";
 
 export default class ShopOwnerDashboardConfig {
@@ -24,4 +25,32 @@ export default class ShopOwnerDashboardConfig {
       iconClassName : "bi bi-currency-dollar",
     },
   ];
+  static analyticBarOptions : Array<AnalyticBarOptionInterface> = [
+    {
+      label : "Analytic Type",
+      options : [{ label :"Revenu", value : "revenue"}, { label : "Loss", value : "loss"} , {label : "profit" , value : "profit"} ],
+      //{ label:"compare shops", value : "compareShops"}
+      description : "",
+      backendKey : "analyticType"
+    },
+    {
+      label:"Range",
+      options:[{label : "Across All Shop", value : "acrossAllShop"}, { label : "Specific Shop" , value : "specificShop"}],
+      description : "",
+      backendKey : "range"
+    },
+    {
+      label:"Chart Type",
+      options : [{ label : "Bar Chart", value : "barChart"}, { label : "Line Chart", value : "lineChart"}],
+      description : "",
+      backendKey : "chartType"
+    },
+    {
+      label:"Duration",
+      options : [{ label : "Monthly" , value:"monthly"} , {label:"Weekly" , value:"weekly"},{ label:"Yearly" , value:"yearly"}],
+      description : "",
+      backendKey : "duration"
+    }
+  ];
+  
 }

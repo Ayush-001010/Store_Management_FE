@@ -4,13 +4,33 @@ import UserDetailsType from "../../Types/Redux/UserDetailsType";
 import APIServices from "../API_Call/APIServices";
 import ShopOwnerDashboardConfig from "../../Config/ShopOwnerDasboardConfig";
 import CardInterface from "../../Types/CardInterface";
+import { AnalyticDataInterface } from "../../Types/AnalyticBarInterface";
+import CommonConfig from "../../Config/CommonConfig";
+import { IOptionInterface } from "../../Types/CommonInterface";
 
 const useShopOwnerDashboardAction = () => {
-  const { userName, userGender , OrganizationID } = useSelector(
+  const { userName, userGender, OrganizationID } = useSelector(
     (state: any) => state.userDetails as UserDetailsType
   );
   const [welcomeText, setWelcomeText] = useState<string | null>(null);
   const [cardValues, setCardValues] = useState<Array<CardInterface>>([]);
+  const [analyticValue, setAnalyticValue] = useState<{
+    duration: string;
+    chartType: string;
+    analyticType: string;
+    range:string;
+    storeId?:string;
+  }>({
+    duration: "yearly",
+    chartType: "lineChart",
+    analyticType: "revenue",
+    range:"acrossAllShop",
+    storeId:""
+  });
+  const [analyticData, setAnalyticData] = useState<
+    Array<AnalyticDataInterface>
+  >([]);
+  const [storeOpt , setStoreOpt] = useState<Array<IOptionInterface>>([]);
 
   const genrateWelcomeText = useCallback(async () => {
     const item = localStorage.getItem("welcomeMessage");
@@ -39,7 +59,7 @@ const useShopOwnerDashboardAction = () => {
     for (const config of configs) {
       const response = await APIServices.postAPIRequest(config.backendUrl, {
         type: config.requestBodyType,
-        organizationId : OrganizationID,
+        organizationId: OrganizationID,
       });
       if (response.success) {
         config.value = response.data;
@@ -47,6 +67,41 @@ const useShopOwnerDashboardAction = () => {
     }
     return results;
   }, [OrganizationID]);
+  const analyticDataFunc = useCallback(async (val :{duration: string,chartType: string,analyticType: string , range : string , storeId ? : string} ) => {
+    const response = await APIServices.postAPIRequest(
+      "/storeManagement/getAnalytics",
+      {
+        type: val.range,
+        analyticType: val.analyticType,
+        durationType: val.duration,
+        organizationId: OrganizationID,
+        storeId : val?.storeId || ""
+      }
+    );
+    return response.success ? response.data : [];
+  }, [OrganizationID]);
+  const applyHandlerOfAnalytic = async (val : {duration: string,chartType: string,analyticType: string , range : string}) : Promise<void> => {
+    setAnalyticValue(val);
+    const res: Array<any> = await analyticDataFunc(val);
+    const arr: Array<AnalyticDataInterface> = [];
+    res.forEach((item: any) => {
+      var obj: AnalyticDataInterface = {
+        xAxisName: `${ val.duration === "yearly" ?  CommonConfig.month[item.month] : val.duration === "monthly" ? `D-${item.day}` :""}${ val.duration === "yearly" ?   `' ${item.year.toString()[2]}${
+          item.year.toString()[3]
+        }` : ""}`,
+        value: item.value,
+      };
+      arr.push(obj);
+    });
+    setAnalyticData(arr);
+  }
+  const getOptions = useCallback((type : string) => {
+    const response = APIServices.postAPIRequest("/storeManagement/getOptions", {
+      type: type,
+      organizationId: OrganizationID,
+    });
+    return response;
+  },[OrganizationID]);
 
   useEffect(() => {
     genrateWelcomeText().then((text: string | null) => {
@@ -55,8 +110,31 @@ const useShopOwnerDashboardAction = () => {
     getCardValues().then((cards: Array<CardInterface>) => {
       setCardValues(cards);
     });
+    analyticDataFunc(analyticValue).then((res: Array<any>) => {
+      // set analytic data state here.
+      const arr: Array<AnalyticDataInterface> = [];
+      res.forEach((item: any) => {
+        var obj: AnalyticDataInterface = {
+          xAxisName: `${CommonConfig.month[item.month]}'${item.year.toString()[2]}${
+            item.year.toString()[3]
+          }`,
+          value: item.value,
+        };
+        arr.push(obj);
+      });
+      setAnalyticData(arr);
+    });
+    getOptions("storeList").then((res:any) => {
+      if(res.success){
+        const options : Array<IOptionInterface> = res.data.map((item:any) => ({
+          label: item.name,
+          value: item.id
+        }));
+        setStoreOpt(options);
+      }
+    });
   }, []);
-  return { welcomeText , cardValues };
+  return { welcomeText, cardValues, analyticValue , analyticData , applyHandlerOfAnalytic , storeOpt };
 };
 
 export default useShopOwnerDashboardAction;
