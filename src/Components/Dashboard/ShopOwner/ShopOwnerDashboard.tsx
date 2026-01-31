@@ -30,7 +30,6 @@ const ShopOwnerDashboard: React.FC<IShopOwnerDashboard> = () => {
         }
     ];
 
-    console.log("Store Options: ", storeOpt);
     const specificFieldSelectionHandler = (value : string)  => {
         console.log("Specific Field Selected Value: ", value);
         if(value === "specificShop") {
@@ -54,11 +53,13 @@ const ShopOwnerDashboard: React.FC<IShopOwnerDashboard> = () => {
     return (
         <div className="w-full">
             <WelcomeBar userName={userName || ""} welcomeMessage={welcomeText} placeholderText="Search Shops" icons={icons} />
-            <HeaderCards cardValues={cardValues as CardInterface[]} />
-            <div>
-                <p>
-                    Upcomming soon...
-                </p>
+            <div className="flex justify-center">
+                <HeaderCards cardValues={cardValues as CardInterface[]} />
+            </div>
+            <div className="flex mt-4 w-full">
+                <div className="w-[450px]">
+                    <p>....</p>
+                </div>
                 <AnalyticBar specificFieldSelectionHandler={specificFieldSelectionHandler} isSpecificFieldSelected={true} specificFieldName="range" applyHandler={applyHandlerOfAnalytic} chartType={analyticValue.chartType === "lineChart" ? "line" : "bar"} options={analyticOptions} analyticValue={analyticValue} analyticData={analyticData}>
                     <AnalyticBar.HeaderOptions/>
                 </AnalyticBar>

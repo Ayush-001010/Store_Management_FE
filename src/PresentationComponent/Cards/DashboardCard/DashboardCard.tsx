@@ -4,7 +4,7 @@ import { Tooltip } from "antd";
 
 const DashboardCard: React.FC<IDashboardCard> = ({ config }) => {
   return (
-    <div className="w-80 h-36 shadow-lg bg-gray-200 rounded-xl mx-4 p-4 transform transition-transform duration-300 hover:-translate-y-1">
+    <div className="w-80 h-36 shadow-lg bg-[#e9ecef] rounded-xl mx-4 p-4 transform transition-transform duration-300 hover:-translate-y-1">
       <div className="flex items-center space-x-3">
         <div className="w-12 h-12 bg-gray-50 flex justify-center items-center rounded-full shadow-inner">
           <i

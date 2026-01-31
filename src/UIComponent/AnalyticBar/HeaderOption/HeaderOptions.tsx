@@ -4,33 +4,55 @@ import { useGetAnalyticBarContext } from "../AnalyticBar";
 import { Button, Select, Tooltip } from "antd";
 
 const HeaderOptions: React.FC<IHeaderOptions> = () => {
-  const { options, analyticValue , changeHandler , applyHandler , isSpecificFieldSelected , specificFieldName , specificFieldSelectionHandler } = useGetAnalyticBarContext();
+  const {
+    options,
+    analyticValue,
+    changeHandler,
+    applyHandler,
+    isSpecificFieldSelected,
+    specificFieldName,
+    specificFieldSelectionHandler,
+  } = useGetAnalyticBarContext();
 
   const selectChangeHandler = (key: string, value: string) => {
-    console.log(key , value);
-    changeHandler(key , value);
-    if(isSpecificFieldSelected && specificFieldName === key && specificFieldSelectionHandler) 
+    changeHandler(key, value);
+    if (
+      isSpecificFieldSelected &&
+      specificFieldName === key &&
+      specificFieldSelectionHandler
+    )
       specificFieldSelectionHandler(value);
-  }
+  };
   return (
-    <div>
+    <div className="flex justify-between gap-2 my-3 bg-[#fbfefb] mx-2 shadow-md p-2 rounded-lg">
       {options.map((config) => (
         <div>
-          <p>
+          <p className="font-medium mb-1 text-[#7f7f7f] text-xs">
             {config.label}
-            <span>*</span>
-            <span>
+            <span className="text-[#9d0208] mx-1">*</span>
+            <span className="cursor-pointer">
               <Tooltip title={config.description}>
                 <i className="bi bi-info-circle" />
               </Tooltip>
             </span>
           </p>
           <div>
-            <Select onChange={(newValue) => selectChangeHandler(config.backendKey , newValue)} options={config.options} value={analyticValue[config.backendKey] || null}/>
+            <Select
+              className="w-full"
+              onChange={(newValue) =>
+                selectChangeHandler(config.backendKey, newValue)
+              }
+              options={config.options}
+              value={analyticValue[config.backendKey] || null}
+            />
           </div>
         </div>
       ))}
-      <Button onClick={applyHandler}>Apply</Button>
+      <div className="self-end">
+        <Button className="bg-[#595959] shadow-lg text-white hover:bg-[#595959] hover:shadow-lg" onClick={applyHandler}>
+          Apply
+        </Button>
+      </div>
     </div>
   );
 };

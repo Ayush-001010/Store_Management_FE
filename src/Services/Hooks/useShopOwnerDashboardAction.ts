@@ -40,7 +40,6 @@ const useShopOwnerDashboardAction = () => {
         user_query: text,
         type: "shop_owner",
       });
-      console.log("Welcome Text Response: ", response);
 
       if (response.success) {
         localStorage.setItem("welcomeMessage", response.data);

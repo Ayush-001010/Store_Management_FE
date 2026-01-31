@@ -50,7 +50,7 @@ const AnalyticBar: AnalyticBarComponent = ({options , children , analyticValue ,
   },[analyticValue]);
   return (
     <AnalyticBarContext.Provider value={{  options , analyticValue : value , analyticData , changeHandler , applyHandler : applyHandlerFunc , isSpecificFieldSelected , specificFieldName , specificFieldSelectionHandler }}>
-        <div>
+        <div className="shadow-lg bg-[#f8f9fa] w-lg m-2 p-2 rounded-md">
             {children}
             {chartType === "line" && <LineChartUI />}
             {chartType === "bar" && <BarChartUI />}

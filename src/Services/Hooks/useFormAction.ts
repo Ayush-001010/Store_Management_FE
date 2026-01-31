@@ -54,7 +54,6 @@ const useFormAction = (
   );
 
   const addNewShopDetails = useCallback((shopNumber : number)=>{
-    console.log("Adding shop number: ", shopNumber);
     const updatedInitialValues = { ...initialValues };
     const updatedSchemaFields: Record<
       string,

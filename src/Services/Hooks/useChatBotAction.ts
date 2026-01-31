@@ -6,7 +6,6 @@ const useChatBotAction = () => {
     try {
       const url: string = CommonConfig.ai_api_url + "?user_input=" + message;
       const response = await APIServices.postAPIRequest(url);
-      console.log("Chatbot response:", response);
       return response;
     } catch (error) {
       console.error("Error sending message to chatbot:", error);

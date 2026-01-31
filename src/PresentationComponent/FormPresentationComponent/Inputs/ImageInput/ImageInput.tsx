@@ -28,7 +28,6 @@ const ImageInput: React.FC<IImageInput> = ({ config , formik }) => {
 
   const changeHandler = ({ fileList: newFileList }: { fileList: any[] }) => {
     setFileList(newFileList);
-    console.log(newFileList);
     formik.setFieldValue(config.backendName, newFileList);
   };
   const previewHandler = async (file: UploadFile) => {

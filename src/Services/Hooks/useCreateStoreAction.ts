@@ -30,7 +30,6 @@ const useCreateStoreAction = () => {
             value: item.id,
         }));
     }
-    console.log("Store Options: ", result);
     return result;
   }, []);
 

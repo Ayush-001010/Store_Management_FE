@@ -1,6 +1,6 @@
 import React from "react";
 import ILine from "./ILine";
-import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
+import { CartesianGrid, Line, LineChart, Tooltip, XAxis, YAxis } from "recharts";
 import { useGetAnalyticBarContext } from "../../AnalyticBar";
 
 const LineChartUI: React.FC<ILine> = () => {
@@ -12,6 +12,10 @@ const LineChartUI: React.FC<ILine> = () => {
       <CartesianGrid strokeDasharray="5" />
         <XAxis dataKey={"xAxisName"} />
         <YAxis />
+        <Tooltip
+        cursor={{ stroke: '#595959', strokeWidth: 1}}
+        defaultIndex={3}
+        />
         <Line
           activeDot={{
             r: 8,

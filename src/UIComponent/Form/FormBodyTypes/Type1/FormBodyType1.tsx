@@ -18,7 +18,6 @@ const FormBodyType1: React.FC<IFormBodyType1> = () => {
         return (
           <div>
             {config.fields.map((field: FormConfig) => {
-              // console.log("Rendering field:", formik);
               switch (field.type) {
                 case "text":
                   return <TextInput config={field} formik={formik} />;
