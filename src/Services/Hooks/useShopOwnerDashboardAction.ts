@@ -7,6 +7,7 @@ import CardInterface from "../../Types/CardInterface";
 import { AnalyticDataInterface } from "../../Types/AnalyticBarInterface";
 import CommonConfig from "../../Config/CommonConfig";
 import { IOptionInterface } from "../../Types/CommonInterface";
+import AnalyticDataContext from "../../Types/AnalyticPoints";
 
 const useShopOwnerDashboardAction = () => {
   const { userName, userGender, OrganizationID } = useSelector(
@@ -31,6 +32,7 @@ const useShopOwnerDashboardAction = () => {
     Array<AnalyticDataInterface>
   >([]);
   const [storeOpt , setStoreOpt] = useState<Array<IOptionInterface>>([]);
+  const [analyticPoints , setAnalyticPoints] = useState<Array<AnalyticDataContext>>([]);
 
   const genrateWelcomeText = useCallback(async () => {
     const item = localStorage.getItem("welcomeMessage");
@@ -67,8 +69,7 @@ const useShopOwnerDashboardAction = () => {
     return results;
   }, [OrganizationID]);
   const analyticDataFunc = useCallback(async (val :{duration: string,chartType: string,analyticType: string , range : string , storeId ? : string} ) => {
-    const response = await APIServices.postAPIRequest(
-      "/storeManagement/getAnalytics",
+    const response = await APIServices.postAPIRequest("/storeManagement/getAnalytics",
       {
         type: val.range,
         analyticType: val.analyticType,
@@ -79,13 +80,13 @@ const useShopOwnerDashboardAction = () => {
     );
     return response.success ? response.data : [];
   }, [OrganizationID]);
-  const applyHandlerOfAnalytic = async (val : {duration: string,chartType: string,analyticType: string , range : string}) : Promise<void> => {
+  const applyHandlerOfAnalytic = async (val : {duration: string,chartType: string,analyticType: string , range : string , storeId ? : string}) : Promise<void> => {
     setAnalyticValue(val);
     const res: Array<any> = await analyticDataFunc(val);
     const arr: Array<AnalyticDataInterface> = [];
     res.forEach((item: any) => {
       var obj: AnalyticDataInterface = {
-        xAxisName: `${ val.duration === "yearly" ?  CommonConfig.month[item.month] : val.duration === "monthly" ? `D-${item.day}` :""}${ val.duration === "yearly" ?   `' ${item.year.toString()[2]}${
+        xAxisName: `${ val.duration === "yearly" ?  CommonConfig.month[item.month] : val.duration === "monthly" ? `D-${item.day}` : `D-${item.date.toString()}`}${ val.duration === "yearly" ?   `' ${item.year.toString()[2]}${
           item.year.toString()[3]
         }` : ""}`,
         value: item.value,
@@ -100,6 +101,21 @@ const useShopOwnerDashboardAction = () => {
       organizationId: OrganizationID,
     });
     return response;
+  },[OrganizationID]);
+  const analyticPointsFunc = useCallback( async () => {
+    const analyticPointsLocal = localStorage.getItem("analyticPointsShopOwner");
+    if(analyticPointsLocal){
+      console.log("Analytic Points from Local Storage: ", analyticPointsLocal);
+      return JSON.parse(analyticPointsLocal) as Array<AnalyticDataContext>;
+    }
+    const response = await APIServices.postAPIForAI("/analytic-newspaper-shopowner", {
+      organization_id: OrganizationID,
+    });
+    console.log("Analytic Points Response: ", response);
+    if(response.success){
+      localStorage.setItem("analyticPointsShopOwner" , JSON.stringify(response.data));
+    }
+    return response.success ? response.data : [];
   },[OrganizationID]);
 
   useEffect(() => {
@@ -132,8 +148,11 @@ const useShopOwnerDashboardAction = () => {
         setStoreOpt(options);
       }
     });
+    analyticPointsFunc().then((data : Array<AnalyticDataContext>) => {
+      setAnalyticPoints(data);
+    });
   }, []);
-  return { welcomeText, cardValues, analyticValue , analyticData , applyHandlerOfAnalytic , storeOpt };
+  return { welcomeText, cardValues, analyticValue , analyticData , applyHandlerOfAnalytic , storeOpt , analyticPoints };
 };
 
 export default useShopOwnerDashboardAction;

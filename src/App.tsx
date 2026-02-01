@@ -18,15 +18,24 @@ const App: React.FC<IApp> = () => {
   );
   return (
     <HashRouter>
-      <TopNavbar />
-      <div className="flex">
-        {isSignIn && <SideNavbar />}
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/createStore" element={<CreateStore />} />
-          <Route path="/shopsDashboard" element={<ShopOwnerDashboard />} />
-        </Routes>
+      <div className="relative">
+        <div className="flex">
+          {isSignIn && <SideNavbar />}
+          <div>
+            <TopNavbar />
+            <div className="flex">
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/signup" element={<SignUp />} />
+                <Route path="/createStore" element={<CreateStore />} />
+                <Route
+                  path="/shopsDashboard"
+                  element={<ShopOwnerDashboard />}
+                />
+              </Routes>
+            </div>
+          </div>
+        </div>
       </div>
     </HashRouter>
   );
