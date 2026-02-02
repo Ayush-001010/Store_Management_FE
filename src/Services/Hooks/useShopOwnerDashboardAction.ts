@@ -33,6 +33,7 @@ const useShopOwnerDashboardAction = () => {
   >([]);
   const [storeOpt , setStoreOpt] = useState<Array<IOptionInterface>>([]);
   const [analyticPoints , setAnalyticPoints] = useState<Array<AnalyticDataContext>>([]);
+  const [storeData , setStoreData] = useState<Array<any>>([]);
 
   const genrateWelcomeText = useCallback(async () => {
     const item = localStorage.getItem("welcomeMessage");
@@ -48,7 +49,6 @@ const useShopOwnerDashboardAction = () => {
         return response.data;
       }
     } else {
-      console.log("Welcome Text from Local Storage: ", item);
       return item;
     }
     return null;
@@ -105,7 +105,6 @@ const useShopOwnerDashboardAction = () => {
   const analyticPointsFunc = useCallback( async () => {
     const analyticPointsLocal = localStorage.getItem("analyticPointsShopOwner");
     if(analyticPointsLocal){
-      console.log("Analytic Points from Local Storage: ", analyticPointsLocal);
       return JSON.parse(analyticPointsLocal) as Array<AnalyticDataContext>;
     }
     const response = await APIServices.postAPIForAI("/analytic-newspaper-shopowner", {
@@ -117,6 +116,49 @@ const useShopOwnerDashboardAction = () => {
     }
     return response.success ? response.data : [];
   },[OrganizationID]);
+  const getData = useCallback( async (type?:string) => {
+    const response = await APIServices.postAPIRequest("/storeManagement/getStoreData", { organizationId : OrganizationID , type : !type ? "All_Store" : type});
+    return response.success ? response.data : [];
+  },[OrganizationID]);
+  const setIsFavorite = useCallback( async(id : string , isFavorite : boolean) => {
+    const response = await APIServices.postAPIRequest("/storeManagement/setFavoriteStore" , {
+      id,
+      isFavorite
+    });
+    return response;
+  },[]);
+  const getDataAccordingToHeaderOption = async (type : "Favorite_Store" | "Profit" | "Loss"| "Most Sold Items" | "All_Store") =>{
+    try {
+      switch(type){
+        case "Favorite_Store" : {
+          console.log("Getting Favorite Store Data");
+          const data = await getData("Favorite_Store");
+          setStoreData(data);
+          break;
+        }
+        case "Profit" : {
+          console.log("Getting Profit Store Data");
+          const data = await getData("Profit");
+          setStoreData(data);
+          break;
+        }
+        case "Loss" : {
+          console.log("Getting Loss Store Data");
+          const data = await getData("Loss");
+          setStoreData(data);
+          break;
+        }
+        case "Most Sold Items" : {
+          console.log("Getting Most Sold Items Store Data");
+          const data = await getData("Most_Sold_Items");
+          setStoreData(data);
+          break;
+        }
+      }
+    } catch (error) {
+     console.log("Error in Get Data According to Header Option: ", error); 
+    }
+  }
 
   useEffect(() => {
     genrateWelcomeText().then((text: string | null) => {
@@ -151,8 +193,11 @@ const useShopOwnerDashboardAction = () => {
     analyticPointsFunc().then((data : Array<AnalyticDataContext>) => {
       setAnalyticPoints(data);
     });
+    getData().then((data : Array<any>) => {
+      setStoreData(data);
+    });
   }, []);
-  return { welcomeText, cardValues, analyticValue , analyticData , applyHandlerOfAnalytic , storeOpt , analyticPoints };
+  return { welcomeText, cardValues, analyticValue , analyticData , setIsFavorite, applyHandlerOfAnalytic , storeOpt , analyticPoints , storeData , getDataAccordingToHeaderOption};
 };
 
 export default useShopOwnerDashboardAction;
