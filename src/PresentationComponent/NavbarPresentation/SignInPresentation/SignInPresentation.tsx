@@ -14,7 +14,6 @@ const SignInPresentation: React.FC<ISignInPresentation> = () => {
   useEffect(() => {
     if (userProfileImage) {
       getImages(userProfileImage).then((res) => {
-        console.log("Image Res ", res);
         if (res.success && res.data) {
           setUrl(res.data);
         }

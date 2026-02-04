@@ -61,7 +61,6 @@ const FormUI: FromComponentProps = ({
     if (submitHandler) {
       submitHandler(values);
     } else {
-      console.log("Form Submitted with values:", values);
     }
   };
 

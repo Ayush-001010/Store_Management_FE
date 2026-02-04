@@ -5,7 +5,4 @@ export default interface CardInterface {
   requestBodyType?: string;
   value?: number | string ;
   iconClassName ?: string;
-  backGroundColorClassName ?: string;
-  textColorClassName ?: string;
-  iconBackGroundColorClassName ?: string;
 }
