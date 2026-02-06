@@ -119,7 +119,7 @@ const ShopOwnerDashboard: React.FC<IShopOwnerDashboard> = () => {
     if (name !== headerOptionsValue) {
       setHeaderOptionsValue(name);
       await getDataAccordingToHeaderOption(
-        name as "Favorite_Store" | "Profit" | "Loss" | "Most Sold Items"
+        name as "Favorites" | "Profit" | "Loss" | "Most Sold Items"
       );
     } else {
       setHeaderOptionsValue(null);
@@ -165,9 +165,14 @@ const ShopOwnerDashboard: React.FC<IShopOwnerDashboard> = () => {
           headerOptionsArr={ShopOwnerDashboardConfig.shopHeaderOptionsArr}
           formatterConfig={ShopOwnerDashboardConfig.storeFormatterConfig}
           formatterHandler={favoriteFormatterHandler}
+          gridConfig={ShopOwnerDashboardConfig.storeGridConfig}
+          gridType="store"
+          gridFilterConfig={ShopOwnerDashboardConfig.storeGridFilterConfig}
         >
           <Dashboard.HeaderOptions />
-          <Dashboard.TableUI />
+          <div className="my-2 w-sm flex justify-start">
+            <Dashboard.ToggleUI />
+          </div>
         </Dashboard>
       </div>
     </div>

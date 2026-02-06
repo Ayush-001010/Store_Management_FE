@@ -1,6 +1,6 @@
 import { AnalyticBarOptionInterface } from "../Types/AnalyticBarInterface";
 import CardInterface from "../Types/CardInterface";
-import { ColumnInterface, FormatterInterface } from "../Types/DashboardInterface";
+import { ColumnInterface, FormatterInterface, GridFilterInterface, GridInterface, HeaderOptionsInterface } from "../Types/DashboardInterface";
 
 export default class ShopOwnerDashboardConfig {
   static dashboardCards: Array<CardInterface> = [
@@ -118,14 +118,167 @@ export default class ShopOwnerDashboardConfig {
       field : "firstSaleDate",
       headerName : "First Sale Date",
       filter : true
+    },
+    {
+      field:"soldItemsCount",
+      headerName : "Sold Items Count",
+      filter : true
     }
   ];
-  static shopHeaderOptionsArr : Array<string> = [ "Favorites" , "Profit" , "Loss" , "Most Sold Items" ];
+  static shopHeaderOptionsArr : Array<HeaderOptionsInterface> = [ 
+    // "Favorites" , "Profit" , "Loss" , "Most Sold Items"
+    {
+      text :"Favorites",
+      backgroundColor : "#f3f4f6",
+      color : "#000000"
+    },
+    {
+      text :"Profit",
+      backgroundColor : "#d1fae5",
+      color : "#065f46"
+    },
+    {
+      text :"Loss",
+      backgroundColor : "#fee2e2",
+      color : "#991b1b"
+    },
+    {
+      text :"Most Sold Items",
+      backgroundColor : "#e0e7ff",
+      color : "#3730a3"
+    }
+   ];
   static storeFormatterConfig : Array<FormatterInterface> = [{
     name : "FavoriteFormatter",
-    position : "start"
+    position : "start",
   },{
     name : "profitFormatter",
     position : "end"
   }];
+  static storeGridConfig : Array<GridInterface> = [
+    {
+      field:"name",
+      headerName : "Shop Name",
+      icon : "bi bi-shop-window"
+    },
+    {
+      field:"description",
+      headerName : "Description",
+      icon : "bi bi-card-text"
+    },
+    {
+      field:"city",
+      headerName : "City",
+      icon : "bi bi-building"
+    },
+    {
+      field:"state",
+      headerName : "State",
+      icon : "bi bi-geo-alt"
+    },
+    {
+      field:"street",
+      headerName : "Street",
+      icon : "bi bi-signpost"
+    },
+    {
+      field:"address",
+      headerName : "Address",
+      icon : "bi bi-house"
+    },
+    {
+      field:"postalCode",
+      headerName : "Postal Code",
+      icon : "bi bi-mailbox"
+    },
+
+    {
+      field:"category",
+      headerName : "Category",
+      icon : "bi bi-tags"
+    },
+    {
+      field:"is24hrOpen",
+      headerName : "24 Hr Open",
+      icon : "bi bi-clock"
+    },
+    {
+      field:"firstSaleDate",
+      headerName : "First Sale Date",
+      icon : "bi bi-calendar-event"
+    },
+    {
+      field:"openingTime",
+      headerName : "Opening Time",
+      icon : "bi bi-alarm"
+    },
+    {
+      field:"closingTime",
+      headerName : "Closing Time",
+      icon : "bi bi-alarm-fill"
+    },
+    {
+      field:"firstSaleDate",
+      headerName : "First Sale Date",
+      icon : "bi bi-calendar-check"
+    }
+  ];
+  static storeGridFilterConfig : Array<GridFilterInterface> =[
+    {
+      field : "name",
+      headerName : "Shop Name",
+      type : "text"
+    },
+    {
+      field : "city",
+      headerName : "City",
+      type : "text"
+    },
+    {
+      field : "state",
+      headerName : "State",
+      type : "text"
+    },
+    {
+      field : "street",
+      headerName : "Street",
+      type : "text"
+    },
+    {
+      field : "address",
+      headerName : "Address",
+      type : "text"
+    },
+    {
+      field : "postalCode",
+      headerName : "Postal Code",
+      type : "text"  
+    },
+    {
+      field : "openingTime",
+      headerName : "Opening Time",
+      type : "time"
+    },
+    {
+      field : "closingTime",
+      headerName : "Closing Time",
+      type : "time"
+    },
+    {
+      field : "firstSaleDate",
+      headerName : "First Sale Date",
+      type : "time"
+    },
+    {
+      field : "category",
+      headerName : "Category",
+      type : "text"
+    },
+    {
+      field : "is24hrOpen",
+      headerName : "24 Hr Open",
+      type : "boolean"
+    }
+
+  ]
 }
