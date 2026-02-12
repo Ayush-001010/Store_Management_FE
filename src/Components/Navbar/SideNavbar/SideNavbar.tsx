@@ -11,8 +11,8 @@ const SideNavbar: React.FC<ISideNavbar> = () => {
 
   const configs = useMemo(()=> userRole === "shopowner" ? SideNavbarConfig.navTitlesShopOwnerConfig: [], [userRole]);
   return (
-  <div className="sticky top-0 w-full bg-[#fbfefb] border-r border-[#ced4da] h-screen shadow-sm">
-    <div className="w-full">
+  <div className="sticky top-0 w-[80px] bg-[#f8f9fa] border-r border-[#ced4da] h-screen shadow-sm">
+    <div className="w-[80px] flex flex-col items-center pt-4">
         {configs.map((config) => <SideNavbarPresentation  title={CommonConfig.prj_title} sub_description={CommonConfig.prj_subDescription} config={config} key={config.navTitle}/>)}
     </div>
   </div>)

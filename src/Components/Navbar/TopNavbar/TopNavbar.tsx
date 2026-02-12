@@ -6,7 +6,7 @@ import NavbarPresentation from "../../../PresentationComponent/NavbarPresentatio
 const TopNavbar: React.FC<ITopNavbar> = () => {
   const { isSignIn } = useSelector((state: any) => state.userDetails);
   return (
-    <div className="sticky top-0 z-50 bg-[#fbfbf2] h-[66px] border-b border-[#ced4da] p-1 shadow-sm">
+    <div className="sticky top-0 z-50 bg-[#f8f9fa] h-[66px] border-b border-[#ced4da] p-1">
       <NavbarPresentation isUserLoggedIn={isSignIn} />
     </div>
   );

@@ -3,7 +3,7 @@ import UserDetailsType from "../../../Types/Redux/UserDetailsType";
 
 
 const initialValue : UserDetailsType = {
-    ID: 0,
+    ID: 33,
     userName: "Ron Weasley",
     userEmail: "ronweasley@gmail.com",
     userRole: "shopowner",
@@ -20,7 +20,16 @@ const initialValue : UserDetailsType = {
 const UserDetailsSlice = createSlice({
     name: "UserDetails",
     initialState: initialValue,
-    reducers: {}
+    reducers: {
+        setUserDetailsData: (state, action) => {
+            // console.log("Updating user details with payload:", action.payload);
+            state.userName = action.payload.userName;
+            state.ID =  action.payload.ID;
+            state.userEmail = action.payload.userEmail;
+            console.log("Updated user details state:", state);
+        }
+    }
 });
 
 export default UserDetailsSlice.reducer;
+export const { setUserDetailsData } = UserDetailsSlice.actions;
