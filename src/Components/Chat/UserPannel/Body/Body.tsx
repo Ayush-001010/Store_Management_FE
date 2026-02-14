@@ -3,12 +3,14 @@ import useChatMessageAction from "../../../../Services/Hooks/useChatMessageActio
 import { ChatRoomInterface } from "../../../../Types/ChatInterface";
 import { message } from "antd";
 import UserDetailsCard from "./UserDetailsCard/UserDetailsCard";
+import { useSelector } from "react-redux";
 
 const Body : React.FC = () => {
     const {getChatRoomDetails} = useChatMessageAction();
     const [userDetails , setUserDetails] = useState<Array<ChatRoomInterface>>([]);
     const [pageNo , setPageNo] = useState<number>(1);
     const [messageAPI, contextHandler] = message.useMessage();
+    const { ID }= useSelector((state : any) => state.userDetails);
 
     useEffect(()=>{
         getChatRoomDetails(pageNo).then((res) => {
@@ -35,7 +37,7 @@ const Body : React.FC = () => {
                 messageAPI.error("Error Fetching Chat Rooms");
             }
         });
-    },[]);
+    },[ID]);
 
     return (
         <div>

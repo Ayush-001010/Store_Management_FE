@@ -23,8 +23,8 @@ const useChatMessageAction = () => {
         const response = await APIServices.postAPIRequest("/chat/getChatRooms" , { userID :  ID , pageNo});
         return response;
     },[ID]);
-    const getChatMessages = useCallback(async (chatRoomID : string ) => {
-        const response = await APIServices.postAPIRequest("/chat/getChatMessages" , { chatRoomID });
+    const getChatMessages = useCallback(async (chatRoomID : string , pageNo : number ) => {
+        const response = await APIServices.postAPIRequest("/chat/getChatMessages" , { chatRoomID  , pageNo});
         return response;
     },[]);
 

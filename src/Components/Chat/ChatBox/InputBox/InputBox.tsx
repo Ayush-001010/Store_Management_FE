@@ -1,31 +1,43 @@
 import React, { useState, useRef, useEffect } from "react";
 import EmojiPicker, { EmojiClickData } from "emoji-picker-react";
 import IInputBox from "./IInputBox";
+import FileUpload from "./FileUpload/FileUpload";
 
-const InputBox: React.FC<IInputBox> = ({sendMessage}) => {
+const InputBox: React.FC<IInputBox> = ({sendMessage , isFileUploadModalOpenHandler }) => {
     const [text, setText] = useState("");
     const [showEmojiPicker, setShowEmojiPicker] = useState(false);
     const emojiPickerRef = useRef<HTMLDivElement>(null);
-
+    const [isUploadModalOpen , setIsUploadModalOpen] = useState(false);
+    const [file , setFile] = useState<File | null>(null);
+    
     const onEmojiClick = (emojiData: EmojiClickData) => {
         setText((prevText) => prevText + emojiData.emoji);
     };
-
     const handleSend = () => {
-        if (text.trim()) {
+        if (text.trim() || file) {
             console.log("Sending message:", text);
-            sendMessage(text.trim());
+            sendMessage(text.trim() , file);
             setText("");
             setShowEmojiPicker(false);
         }
     };
-
     const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Enter") {
             e.preventDefault();
             handleSend();
         }
     };
+    const toggleUploadModal = () => {
+        isFileUploadModalOpenHandler();
+        setIsUploadModalOpen((prev) => !prev);
+    };
+    const fileHandler = (file: File) => {
+        setFile(file);
+        console.log("Selected file:", file);
+        setIsUploadModalOpen(false);
+        isFileUploadModalOpenHandler();
+    };
+   
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -45,6 +57,19 @@ const InputBox: React.FC<IInputBox> = ({sendMessage}) => {
 
     return (
         <div className="absolute bottom-10 left-0 right-0 bg-white border-t border-gray-300 py-2 px-4">
+            {file && (
+                <div className="flex w-1/2 items-center gap-2 mb-2 bg-gray-100 border border-gray-300 rounded-lg px-3 py-2">
+                    <span className="text-sm text-gray-700 truncate">{file.name}</span>
+                    <i className="bi bi-file-earmark-arrow-up-fill"/>
+                    <button
+                        onClick={toggleUploadModal}
+                        className="ml-auto text-sm text-blue-500 hover:underline"
+                        type="button"
+                    >
+                        Change
+                    </button>
+                </div>
+            )}
             <div className="flex items-center gap-2">
                 <div className="flex-1 relative" ref={emojiPickerRef}>
                     <div className="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-full px-3 py-1.5 focus-within:border-blue-400 transition-all">     
@@ -78,13 +103,13 @@ const InputBox: React.FC<IInputBox> = ({sendMessage}) => {
                     )}
                 </div>
 
-                <button className="bg-gray-200 hover:bg-gray-300 text-gray-600 flex-shrink-0 w-9 h-9 rounded-full flex items-center justify-center transition-all duration-200">
+                <button onClick={toggleUploadModal} className="bg-gray-200 hover:bg-gray-300 text-gray-600 flex-shrink-0 w-9 h-9 rounded-full flex items-center justify-center transition-all duration-200">
                     <i className="bi bi-paperclip text-base"/>
                 </button>
 
                 <button
                     onClick={handleSend}
-                    disabled={!text.trim()}
+                    disabled={!text.trim() && !file}
                     className={`flex-shrink-0 w-9 h-9 rounded-full flex items-center justify-center transition-all duration-200 ${
                         text.trim()
                             ? "bg-blue-500 hover:bg-blue-600 text-white shadow-md hover:shadow-lg"
@@ -96,6 +121,7 @@ const InputBox: React.FC<IInputBox> = ({sendMessage}) => {
                     <i className="bi bi-send-fill text-sm"></i>
                 </button>
             </div>
+            {isUploadModalOpen && <FileUpload setFile={fileHandler} closeHandler={toggleUploadModal} />}
         </div>
     );
 };

@@ -1,14 +1,15 @@
 import React, { createContext, useContext, useState } from "react";
 import IChat from "./IChat";
 import UserPannel from "./UserPannel/UserPannel";
-import { ChatRoomInterface } from "../../Types/ChatInterface";
+import { ChatRoomInterface, RecivedNewMessageInterface } from "../../Types/ChatInterface";
 import ChatBox from "./ChatBox/ChatBox";
 import useSendChatMessageAction from "../../Services/Hooks/useSendChatMessageAction";
 
 interface IChatContext {
   chatRoomSelectHandler: (chatRoomDetails: ChatRoomInterface) => void;
   selectedChatRoom: ChatRoomInterface | undefined;
-  sendMessage : (message : string , sendDetails : ChatRoomInterface) => void;
+  sendMessage : (message : string , file : File | null , sendDetails : ChatRoomInterface) => void;
+  recivedNewMessage : Array<RecivedNewMessageInterface>;
 }
 const ChatContext = createContext<undefined | IChatContext>(undefined);
 
@@ -24,14 +25,15 @@ export const useGetChatContext = () => {
 
 const Chat: React.FC<IChat> = () => {
   const [selectedChatRoom, setSelectedChatRoom] = useState<undefined | ChatRoomInterface>(undefined);
-  const {sendMessage} = useSendChatMessageAction();
+  const {sendMessage , recivedNewMessage , clearNewMessageCount} = useSendChatMessageAction();
 
   const chatRoomSelectHandler = (chatRoomDetails: ChatRoomInterface) => {
     setSelectedChatRoom(chatRoomDetails);
+    clearNewMessageCount(chatRoomDetails.chatRoomID);
   };
 
   return (
-    <ChatContext.Provider value={{ chatRoomSelectHandler, selectedChatRoom , sendMessage }}>
+    <ChatContext.Provider value={{ chatRoomSelectHandler, selectedChatRoom , sendMessage , recivedNewMessage }}>
       <div className="flex w-screen h-full">
         <div className="w-[310px]">
         <UserPannel />
