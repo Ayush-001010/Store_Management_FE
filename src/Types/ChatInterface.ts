@@ -18,6 +18,7 @@ export interface ChatMessageInterface {
   fileURL?: string;
   createdAt: number;
   updatedAt: number;
+  fileType ? : "Image" | "Other";
 }
 
 export interface RecivedNewMessageInterface {

@@ -10,6 +10,7 @@ import MessageBox from "./MessageBox/MessageBox";
 import { useSelector } from "react-redux";
 import UserDetailsType from "../../../Types/Redux/UserDetailsType";
 import HeaderBox from "./HeaderBox/HeaderBox";
+import DetailsBox from "./DetailsBox/DetailsBox";
 
 const ChatBox: React.FC<IChatBox> = () => {
     const { selectedChatRoom  , sendMessage} = useGetChatContext();
@@ -21,6 +22,7 @@ const ChatBox: React.FC<IChatBox> = () => {
     const [isFirst , setIsFirst] = useState(false);
     const scrollDivRef = useRef<HTMLDivElement>(null);
     const [isFileUploadModalOpen, setIsFileUploadModalOpen] = useState(false);
+    const [isOpenDetails , setIsOpenDetails] = useState(false);
 
     const sendMessageHandler = (message: string , file : File | null) => {
         if(selectedChatRoom){
@@ -65,6 +67,9 @@ const ChatBox: React.FC<IChatBox> = () => {
     const isFileUploadModalOpenHandler = () => {
         setIsFileUploadModalOpen((prev) => !prev);
     }
+    const openDetailsHandler = () => {
+        setIsOpenDetails((prev) => !prev);
+    }
     useEffect(() => {
         const scrollDiv = scrollDivRef.current;
         if (scrollDiv) {
@@ -76,7 +81,6 @@ const ChatBox: React.FC<IChatBox> = () => {
             return () => scrollDiv.removeEventListener("scroll", handleScroll);
         }
     }, [selectedChatRoom, isEmpty , pageNo]);
-
     useEffect(() => {
         if(isFirst){
             fetchMessages().finally(()=>{
@@ -89,7 +93,6 @@ const ChatBox: React.FC<IChatBox> = () => {
             });
         }
     }, [isFirst]);
-    
     useEffect(() => {
         if(selectedChatRoom){
             setIsFirst(true);
@@ -99,23 +102,30 @@ const ChatBox: React.FC<IChatBox> = () => {
 
     return (
         <div className="h-full w-full">
-            {!selectedChatRoom && <EmptyChatBoxPresentation />}
-            {selectedChatRoom && (
-                <div className="relative bg-[#f8f9fa] w-[1085px] h-[800px] overflow-hidden">
-                    {isEmpty && <ZeroMessagePresentation />}
-                    {!isEmpty && (
-                        <div className={isFileUploadModalOpen ? "opacity-25" : ""}>
-                            <HeaderBox/>
-                            <div ref={scrollDivRef}  className="h-[650px]  overflow-y-auto flex flex-col">
-                                <MessageBox messages={messages} key={Math.random()*1000}/>
-                            </div>
-                        </div>
-                    )}
-                    <InputBox sendMessage={sendMessageHandler} isFileUploadModalOpenHandler={isFileUploadModalOpenHandler}/>
+          {!selectedChatRoom && <EmptyChatBoxPresentation />}
+          {selectedChatRoom && (
+            <div className="relative bg-[#f8f9fa] flex h-[800px] w-[1100px] overflow-hidden rounded-lg">
+              {isEmpty && <ZeroMessagePresentation />}
+              {!isEmpty && (
+                <div className={`transition-all duration-300 ${isOpenDetails ? "w-[800px]" : "w-full"} ${isFileUploadModalOpen ? "opacity-25" : ""}`}>
+                  <HeaderBox openDetailsHandler={openDetailsHandler}/>
+                  <div className="flex w-full h-[740px]">
+                    <div ref={scrollDivRef} className="h-[650px] w-full overflow-y-auto flex flex-col">
+                      <MessageBox messages={messages} />
+                    </div>
+                  </div>
                 </div>
-            )}
+              )}
+              {isOpenDetails && <DetailsBox />}
+              <InputBox 
+                isOpenDetails={isOpenDetails} 
+                sendMessage={sendMessageHandler} 
+                isFileUploadModalOpenHandler={isFileUploadModalOpenHandler}
+              />
+            </div>
+          )}
         </div>
-    );
+      );
 };
 
 export default ChatBox;

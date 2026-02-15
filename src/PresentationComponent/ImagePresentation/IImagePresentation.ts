@@ -1,5 +1,6 @@
 export default interface IImagePresentation {
-    imageKey : string;
+    imageKey? : string;
     divCss ?: string;
     imgCss ?: string;
+    imageURL? : string;
 }

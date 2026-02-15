@@ -40,5 +40,4 @@ const MessageBox: React.FC<IMessageBox> = ({ messages }) => {
   );
 };
 
-// ✅ Memoize MessageBox too
 export default React.memo(MessageBox);

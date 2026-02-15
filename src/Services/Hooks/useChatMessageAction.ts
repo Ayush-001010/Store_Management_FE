@@ -27,8 +27,16 @@ const useChatMessageAction = () => {
         const response = await APIServices.postAPIRequest("/chat/getChatMessages" , { chatRoomID  , pageNo});
         return response;
     },[]);
+    const getCountOfFileType  = useCallback(async (chatRoomID : string , type : "Image" | "Other") => {
+        const response = await APIServices.postAPIRequest("/chat/getCountOfFileType" , { chatRoomID , type });
+        return response;
+    },[]);
+    const getFilesAndImages = useCallback(async (chatRoomID : string , type : "Image" | "Other") => {
+        const response = await APIServices.postAPIRequest("/chat/getFilesAndImages" , { chatRoomID , type });
+        return response;
+    },[]);
 
-    return { getUserDetails  , createChatRoom  , getChatRoomDetails , getChatMessages};
+    return { getUserDetails  , createChatRoom  , getChatRoomDetails , getChatMessages , getCountOfFileType , getFilesAndImages};
 };
 
 export default useChatMessageAction;
