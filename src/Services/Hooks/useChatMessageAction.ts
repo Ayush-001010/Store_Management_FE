@@ -35,8 +35,12 @@ const useChatMessageAction = () => {
         const response = await APIServices.postAPIRequest("/chat/getFilesAndImages" , { chatRoomID , type });
         return response;
     },[]);
+    const askAI = useCallback(async (query : string) => {
+        const response = await APIServices.postAPIForAI(`/chat-group-info?user_input=${query}`);
+        return response;
+    },[])
 
-    return { getUserDetails  , createChatRoom  , getChatRoomDetails , getChatMessages , getCountOfFileType , getFilesAndImages};
+    return { getUserDetails  , createChatRoom  , getChatRoomDetails , getChatMessages , getCountOfFileType , getFilesAndImages , askAI};
 };
 
 export default useChatMessageAction;

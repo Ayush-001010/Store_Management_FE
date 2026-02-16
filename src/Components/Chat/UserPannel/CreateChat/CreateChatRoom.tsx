@@ -6,15 +6,20 @@ import useChatMessageAction from "../../../../Services/Hooks/useChatMessageActio
 
 const CreateChatRoom: React.FC<ICreateChatRoom> = ({ onClose , open })  => {
     const [activeChatType , setActiveChatType] = useState<"oneToOne" | "group" | "">("");
-    const { getUserDetails , createChatRoom } = useChatMessageAction();
+    const { getUserDetails , createChatRoom , askAI } = useChatMessageAction();
     const [userName , setUserName] = useState("");
     const [suggestedUsers , setSuggestedUsers] = useState<Array<any>>([]);
     const [selectedUsers , setSelectedUsers] = useState<Array<any>>([]);
     const [messageAPI , contextHandler ]= message.useMessage();
     const [customNickName , setCustomNickName] = useState("");
+    const [userInputText , setUserInputText] = useState("");
+    const [aiResponse , setAIResponse] = useState<Array<{userEmail : string , userProfileImage : string , userName : string , location : string}>>([]);
 
     const customNickNameChangeHandler = (e : React.ChangeEvent<HTMLInputElement>) => {
         setCustomNickName(e.target.value);
+    }
+    const userInputChangeHandler = (e : any) => {
+        setUserInputText(e.target.value);
     }
     const handleChatTypeSelection = (type : "oneToOne" | "group") => {
         setActiveChatType(type);
@@ -39,20 +44,6 @@ const CreateChatRoom: React.FC<ICreateChatRoom> = ({ onClose , open })  => {
         }
         setUserName("");
     }
-    useEffect(()=>{
-        const obj = setTimeout(async ()=>{
-            if(userName.trim() === ""){
-                setSuggestedUsers([]);
-                return;
-            }
-            const res = await getUserDetails(userName);
-            setSuggestedUsers(res);
-        },500);
-        return () => {
-            clearTimeout(obj);
-        };
-    },[userName]);
-
     const createChatRoomHandler = async () => {
         if(activeChatType === ""){
             messageAPI.error({content : "Please select a chat type"});
@@ -76,7 +67,34 @@ const CreateChatRoom: React.FC<ICreateChatRoom> = ({ onClose , open })  => {
             messageAPI.error({content : "Failed to create chat room"});
         }
     }
+    const askAIHandler = async () => {
+        if(userInputText.trim() === ""){
+            messageAPI.error({content : "Please enter a query"});
+            return;
+        }
+        const response = await askAI(userInputText);
+        console.log("AI Response  ",response);
+        if(response.success){
+            setAIResponse(response.data);
+        } else {
+            messageAPI.error({content : "Failed to get AI response"});
+            setAIResponse([]);
+        }
+    }
 
+    useEffect(()=>{
+        const obj = setTimeout(async ()=>{
+            if(userName.trim() === ""){
+                setSuggestedUsers([]);
+                return;
+            }
+            const res = await getUserDetails(userName);
+            setSuggestedUsers(res);
+        },500);
+        return () => {
+            clearTimeout(obj);
+        };
+    },[userName]);
 
     return (
         <div>
@@ -84,7 +102,10 @@ const CreateChatRoom: React.FC<ICreateChatRoom> = ({ onClose , open })  => {
             <Modal open={open} onCancel={onClose} footer={null} centered width={600}>
                 <CreateRoomPresentation onClose={onClose} addSelectedUser={addSelectedUser} selectedUsers={selectedUsers} 
                     removeUser={removeSelectedUser} suggestedUsers={suggestedUsers} 
+                    userInputChangeHandler={userInputChangeHandler} userInputText={userInputText}
                     createChatRoomHandler={createChatRoomHandler}
+                    askAIHandler={askAIHandler}
+                    aiResponse={aiResponse}
                     textFieldName={activeChatType  === "group" ? "Group Name" : "Custom Nick Name"} 
                     handleChatTypeSelection={handleChatTypeSelection} activeChatType={activeChatType} 
                     userName={userName} userNameChangeHandler={userNameChangeHandler}

@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState } from "react";
 import IChat from "./IChat";
 import UserPannel from "./UserPannel/UserPannel";
-import { ChatRoomInterface, RecivedNewMessageInterface } from "../../Types/ChatInterface";
+import { ChatRoomInterface, RecivedNewMessageInterface, SomeOneTypingInterface } from "../../Types/ChatInterface";
 import ChatBox from "./ChatBox/ChatBox";
 import useSendChatMessageAction from "../../Services/Hooks/useSendChatMessageAction";
 
@@ -10,6 +10,9 @@ interface IChatContext {
   selectedChatRoom: ChatRoomInterface | undefined;
   sendMessage : (message : string , file : File | null , sendDetails : ChatRoomInterface) => void;
   recivedNewMessage : Array<RecivedNewMessageInterface>;
+  typingStart : (chatRoomID : string) => void;
+  someOneTyping : Array<SomeOneTypingInterface> | null;
+  stopTyping : (chatRoomID: string) => void;
 }
 const ChatContext = createContext<undefined | IChatContext>(undefined);
 
@@ -25,7 +28,7 @@ export const useGetChatContext = () => {
 
 const Chat: React.FC<IChat> = () => {
   const [selectedChatRoom, setSelectedChatRoom] = useState<undefined | ChatRoomInterface>(undefined);
-  const {sendMessage , recivedNewMessage , clearNewMessageCount} = useSendChatMessageAction();
+  const {sendMessage , recivedNewMessage , clearNewMessageCount , typingStart , someOneTyping , stopTyping} = useSendChatMessageAction();
 
   const chatRoomSelectHandler = (chatRoomDetails: ChatRoomInterface) => {
     setSelectedChatRoom(chatRoomDetails);
@@ -33,7 +36,7 @@ const Chat: React.FC<IChat> = () => {
   };
 
   return (
-    <ChatContext.Provider value={{ chatRoomSelectHandler, selectedChatRoom , sendMessage , recivedNewMessage }}>
+    <ChatContext.Provider value={{ chatRoomSelectHandler, selectedChatRoom , sendMessage , recivedNewMessage , typingStart , someOneTyping , stopTyping}}>
       <div className="flex w-screen h-full">
         <div className="w-[310px]">
         <UserPannel />

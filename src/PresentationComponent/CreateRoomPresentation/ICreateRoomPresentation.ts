@@ -12,4 +12,8 @@ export default interface ICreateRoomPresentation {
     customNickNameChangeHandler : (e : React.ChangeEvent<HTMLInputElement>) => void;
     customNickName : string;
     createChatRoomHandler : () => void;
+    userInputChangeHandler : (e :any ) => void;
+    userInputText : string;
+    askAIHandler : () => void;
+    aiResponse : Array<{userEmail : string , userProfileImage : string , userName : string , location : string}>;
 }

@@ -10,7 +10,8 @@ const SelectedUser: React.FC<ISelectedUser> = ({ user, removeUser }) => {
 
   useEffect(() => {
     setIsLoading(true);
-    getImages(user.imageKey)
+    console.log("Fetching image for user:", user);
+    getImages(user.imageKey || user.image)
       .then((res) => {
         setImageUrl(res.data || "");
       })

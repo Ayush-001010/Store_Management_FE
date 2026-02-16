@@ -35,11 +35,44 @@ module.exports = {
           '0%': { transform: 'scale(0.9)', opacity: '0' },
           '100%': { transform: 'scale(1)', opacity: '1' },
         },
+        wave: {
+          '0%, 60%, 100%': {
+            transform: 'scale(1)',
+            opacity: '0.5',
+          },
+          '30%': {
+            transform: 'scale(1.4)',
+            opacity: '1',
+          },
+        },
+        slideInLeft: {
+          from: {
+            opacity: '0',
+            transform: 'translateX(-20px)',
+          },
+          to: {
+            opacity: '1',
+            transform: 'translateX(0)',
+          },
+        },
+        typing: {
+          '0%, 60%, 100%': { 
+            transform: 'translateY(0)', 
+            opacity: '0.4',
+          },
+          '30%': { 
+            transform: 'translateY(-8px)', 
+            opacity: '1',
+          },
+        },
       },
       animation: {
         fadeIn: 'fadeIn 0.3s ease-in',
         slideIn: 'slideIn 0.3s ease-out',
         popIn: 'popIn 0.3s ease-out',
+        wave: 'wave 1.4s infinite ease-in-out',
+        slideInLeft: 'slideInLeft 0.3s ease-out',
+        typing: 'typing 1.4s infinite ease-in-out',
       },
     },
   },

@@ -2,6 +2,8 @@ import React, { useState, useRef, useEffect } from "react";
 import EmojiPicker, { EmojiClickData } from "emoji-picker-react";
 import IInputBox from "./IInputBox";
 import FileUpload from "./FileUpload/FileUpload";
+import useSendChatMessageAction from "../../../../Services/Hooks/useSendChatMessageAction";
+import { useGetChatContext } from "../../Chat";
 
 const InputBox: React.FC<IInputBox> = ({sendMessage , isFileUploadModalOpenHandler, isOpenDetails }) => {
     const [text, setText] = useState("");
@@ -9,6 +11,8 @@ const InputBox: React.FC<IInputBox> = ({sendMessage , isFileUploadModalOpenHandl
     const emojiPickerRef = useRef<HTMLDivElement>(null);
     const [isUploadModalOpen , setIsUploadModalOpen] = useState(false);
     const [file , setFile] = useState<File | null>(null);
+    const [isTyping,setIsTyping] = useState<boolean>(false);
+    const { selectedChatRoom  , stopTyping , typingStart} = useGetChatContext();
     
     const onEmojiClick = (emojiData: EmojiClickData) => {
         setText((prevText) => prevText + emojiData.emoji);
@@ -37,8 +41,35 @@ const InputBox: React.FC<IInputBox> = ({sendMessage , isFileUploadModalOpenHandl
         setIsUploadModalOpen(false);
         isFileUploadModalOpenHandler();
     };
-   
+    const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setText(e.target.value);
+        if(!isTyping){
+            setIsTyping(true);
+        }
+    };
 
+    useEffect(()=>{
+        const obj = setTimeout(() => {
+            if(isTyping){
+                typingStart(selectedChatRoom?.chatRoomID || "");
+            }
+        },100);
+
+        return () => {
+            clearTimeout(obj);
+        };
+    },[isTyping]);
+
+    useEffect(()=>{
+        const obj = setTimeout(() => {
+            setIsTyping(false);
+            stopTyping(selectedChatRoom?.chatRoomID || "");
+        },3000);
+        
+        return () => {
+            clearTimeout(obj);
+        };
+    },[text]);
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (emojiPickerRef.current && !emojiPickerRef.current.contains(event.target as Node)) {
@@ -76,7 +107,7 @@ const InputBox: React.FC<IInputBox> = ({sendMessage , isFileUploadModalOpenHandl
                     <input
                         type="text"
                         value={text}
-                        onChange={(e) => setText(e.target.value)}
+                        onChange={changeHandler}
                         onKeyPress={handleKeyPress}
                         placeholder="Type a message..."
                         className="flex-1 bg-transparent outline-none text-gray-800 placeholder-gray-400 text-sm"

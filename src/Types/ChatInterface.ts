@@ -18,10 +18,15 @@ export interface ChatMessageInterface {
   fileURL?: string;
   createdAt: number;
   updatedAt: number;
-  fileType ? : "Image" | "Other";
+  fileType?: "Image" | "Other";
 }
 
 export interface RecivedNewMessageInterface {
   chatRoomID: string;
   noOfNewMessages: number;
+}
+
+export interface SomeOneTypingInterface {
+  chatRoomID: string;
+  userName: string;
 }
