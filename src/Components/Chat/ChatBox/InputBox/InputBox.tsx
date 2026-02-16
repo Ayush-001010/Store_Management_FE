@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from "react";
 import EmojiPicker, { EmojiClickData } from "emoji-picker-react";
 import IInputBox from "./IInputBox";
 import FileUpload from "./FileUpload/FileUpload";
-import useSendChatMessageAction from "../../../../Services/Hooks/useSendChatMessageAction";
 import { useGetChatContext } from "../../Chat";
 
 const InputBox: React.FC<IInputBox> = ({sendMessage , isFileUploadModalOpenHandler, isOpenDetails }) => {
@@ -64,7 +63,7 @@ const InputBox: React.FC<IInputBox> = ({sendMessage , isFileUploadModalOpenHandl
         const obj = setTimeout(() => {
             setIsTyping(false);
             stopTyping(selectedChatRoom?.chatRoomID || "");
-        },3000);
+        },10000);
         
         return () => {
             clearTimeout(obj);
