@@ -127,10 +127,10 @@ const useShopOwnerDashboardAction = () => {
     });
     return response;
   },[]);
-  const getDataAccordingToHeaderOption = async (type : "Favorite_Store" | "Profit" | "Loss"| "Most Sold Items" | "All_Store") =>{
+  const getDataAccordingToHeaderOption = async (type : "Favorites" | "Profit" | "Loss"| "Most Sold Items" | "All_Store") =>{
     try {
       switch(type){
-        case "Favorite_Store" : {
+        case "Favorites" : {
           console.log("Getting Favorite Store Data");
           const data = await getData("Favorite_Store");
           setStoreData(data);
@@ -152,6 +152,15 @@ const useShopOwnerDashboardAction = () => {
           console.log("Getting Most Sold Items Store Data");
           const data = await getData("Most_Sold_Items");
           setStoreData(data);
+          break;
+        }
+        case "All_Store" : {
+          console.log("Getting All Store Data");
+          const data = await getData();
+          setStoreData(data);
+          break;
+        }
+        default : {
           break;
         }
       }

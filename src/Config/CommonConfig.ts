@@ -18,4 +18,20 @@ export default class CommonConfig {
     November: "Nov",
     December: "Dec",
   };
+  static imageMimeTypes = [
+    "image/jpeg",          // .jpg, .jpeg
+    "image/png",           // .png
+    "image/gif",           // .gif
+    "image/webp",          // .webp
+    "image/avif",          // .avif
+    "image/heic",          // .heic (iPhone)
+    "image/heif",          // .heif
+    "image/svg+xml",       // .svg
+    "image/bmp",           // .bmp
+    "image/x-ms-bmp",      // .bmp (alternative)
+    "image/tiff",          // .tiff, .tif
+    "image/x-icon",        // .ico
+    "image/vnd.microsoft.icon", // .ico (alternative)
+    "image/x-tiff",        // .tiff (alternative)
+  ];
 }

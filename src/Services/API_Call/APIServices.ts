@@ -23,5 +23,18 @@ export default class APIServices {
       console.error("Error in POST API Request:", error);
       return { success: false, data: null };
     }
+  };
+  static uploadFileToS3 = async (file : File , contentType : string , url : string)=>{
+    try {
+      console.log("Type   ",contentType);
+      const response = await axios.put(url, file, {
+          headers: {
+              'Content-Type': contentType,
+          },
+      });
+      return { success: true, data: response.data };
+    } catch (error) {
+        return { success: false, error };
+    }
   }
 }

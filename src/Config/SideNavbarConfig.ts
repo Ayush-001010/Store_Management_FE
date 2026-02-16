@@ -6,6 +6,11 @@ export default class SideNavbarConfig {
             navTitle : "Home",
             link : "/shopsDashboard",
             iconClass:"bi bi-house"
+        },
+        {
+            navTitle : "Chat",
+            link : "/shopChat",
+            iconClass:"bi bi-people-fill"
         }
     ];
  }
