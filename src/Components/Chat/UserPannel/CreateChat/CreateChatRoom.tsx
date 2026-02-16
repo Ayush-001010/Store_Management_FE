@@ -54,9 +54,6 @@ const CreateChatRoom: React.FC<ICreateChatRoom> = ({ onClose , open })  => {
         } else if(activeChatType === "group" && customNickName.trim() === ""){
             messageAPI.error({content : "Please enter a group name"});
             return;
-        } else if(activeChatType === "oneToOne" && customNickName.trim() === ""){
-            messageAPI.error({content : "Please enter a custom nick name"});
-            return;
         }
         const selectedUserIds = selectedUsers.map((user) => user.id);
         const response = await createChatRoom(activeChatType === "oneToOne" ? "one-to-one" : "group" , selectedUserIds , activeChatType === "oneToOne" ? customNickName : "" , activeChatType === "group" ? customNickName : "");
@@ -68,6 +65,7 @@ const CreateChatRoom: React.FC<ICreateChatRoom> = ({ onClose , open })  => {
         }
     }
     const askAIHandler = async () => {
+        messageAPI.open({content : "Getting response from AI..." , key : "aiResponse" , duration : 0});
         if(userInputText.trim() === ""){
             messageAPI.error({content : "Please enter a query"});
             return;
@@ -80,6 +78,7 @@ const CreateChatRoom: React.FC<ICreateChatRoom> = ({ onClose , open })  => {
             messageAPI.error({content : "Failed to get AI response"});
             setAIResponse([]);
         }
+        messageAPI.destroy();
     }
 
     useEffect(()=>{
