@@ -14,6 +14,7 @@ import ShopOwnerDashboard from "./Components/Dashboard/ShopOwner/ShopOwnerDashbo
 import Chat from "./Components/Chat/Chat";
 import SignInForm from "./Components/SignInForm/SignInForm";
 import { setUserDetailsData } from "./Redux/Slices/UserDetails/UserDetails";
+import ECom from "./Components/ECom/ECom";
 
 const App: React.FC<IApp> = () => {
   const { isSignIn } = useSelector(
@@ -46,6 +47,7 @@ const App: React.FC<IApp> = () => {
                 <Route path="/shopsDashboard" element={<ShopOwnerDashboard />}/>
                 <Route path="/shopChat" element={<Chat />} />
                 <Route path="/signIn" element={<SignInForm />} />
+                <Route path="/ecom/:storeId" element={<ECom />} />
               </Routes>
             </div>
           </div>
