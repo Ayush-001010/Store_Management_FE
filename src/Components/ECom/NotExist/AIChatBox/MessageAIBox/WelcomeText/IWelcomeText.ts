@@ -2,5 +2,5 @@ import { AICreateLayoutChatInterface } from "../../../../../../Types/AICreateLay
 
 export default interface IWelcomeText {
     chat : AICreateLayoutChatInterface;
-    applySendHandler : (value : string) => void;
+    applySendHandler : (value : string ,  type : "Layout" | "Header") => void;
 }

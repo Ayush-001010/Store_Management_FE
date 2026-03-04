@@ -16,14 +16,53 @@ const useAICreateLayoutChatBox = () => {
         console.log(response);
         return response;
     },[userName , ID]);
-    const sendResponse = async (value : string) => {
-        setMessages((prev : any) => [...prev , {
-        }])
+    const sendResponse = async (value : string , type : "Layout" | "Title" | "Header" | "Title-Layout") => {
+        setMessages((prev : any) => {
+            const newMessages : Array<AICreateLayoutChatInterface> = [...prev];
+            newMessages.push({
+                content : value,
+                isLoading : true,
+                type : "Response",
+                boldWords : [],
+                isUser : true
+            });
+            if(type === "Layout"){
+                newMessages.push({
+                    content : "",
+                    isLoading : true,
+                    type : "Layout",
+                    boldWords : [],
+                    isUser : false
+                });
+            } else if(type === "Title"){
+                newMessages.push({
+                    content : "",
+                    isLoading : true,
+                    type : "Title",
+                    boldWords : [],
+                    isUser : false
+                });
+            }
+            return newMessages;
+        });
         const response = await APIServices.postAPIForAI("/create-layout-ai" , {
                 "user_input": value,
                 "user_id": ID
         })
         console.log(response);
+        if(response.success){
+            setMessages((prev : any) => {
+                const newMessages : Array<AICreateLayoutChatInterface> = [...prev];
+                newMessages[newMessages.length - 1].content = response.data.content;
+                newMessages[newMessages.length - 1].isLoading = false;
+                newMessages[newMessages.length - 1].boldWords = response.data.boldWords;
+                if(type === "Title-Layout"){
+                    if(!response.data.noOfText) return newMessages;
+                    newMessages[newMessages.length - 2].noOfText = response.data.noOfText;
+                }
+                return newMessages;
+            });
+        }
         return response;
     };
 

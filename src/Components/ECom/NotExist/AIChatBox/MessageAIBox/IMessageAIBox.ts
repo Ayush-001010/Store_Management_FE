@@ -2,5 +2,5 @@ import { AICreateLayoutChatInterface } from "../../../../../Types/AICreateLayout
 
 export default interface IMessageAIBox {
     chats : Array<AICreateLayoutChatInterface>;  
-    applySendHandler : (value : string) => void; 
+    applySendHandler : (value : string ,  type : "Layout" | "Header" | "Title" | "Title-Layout") => void; 
 }

@@ -13,9 +13,10 @@ const AIChatBox : React.FC<IAIChatBox> = ({open , onClose}) => {
     const changeHandler = (e : any) => {
         setInputValue(e.target.value);
     };
-    const applySendHandler = async (value : string) => {
+    const applySendHandler = async (value : string , type : "Layout" | "Title" | "Header" | "Title-Layout") => {
         console.log(value);
-        await sendResponse(value);   
+        
+        await sendResponse(value , type);   
     }
     console.log(messages);
     return (
@@ -23,7 +24,6 @@ const AIChatBox : React.FC<IAIChatBox> = ({open , onClose}) => {
             <div className="p-4">
                 <Header />
                 <MessageAIBox chats={messages} applySendHandler={applySendHandler}/>
-                <InputBox value={inputValue}  onChange={changeHandler} />
             </div>
         </Modal>
     )
